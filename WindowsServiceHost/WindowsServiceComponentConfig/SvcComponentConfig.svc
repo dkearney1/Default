@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="DKK.WindowsServiceComponentConfig.SvcComponentConfig" CodeBehind="SvcComponentConfig.svc.cs" %>

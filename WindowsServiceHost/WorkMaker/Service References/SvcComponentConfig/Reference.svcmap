@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2eb17bdf-6e50-41ee-9744-4a35e2d2b66f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1739/SvcComponentConfig.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SvcComponentConfig.disco" MetadataType="Disco" ID="f495fed7-4162-4ba6-a0ab-2b95b470cf6b" SourceId="1" SourceUrl="http://localhost:1739/SvcComponentConfig.svc?disco" />
+    <MetadataFile FileName="SvcComponentConfig.xsd" MetadataType="Schema" ID="28252259-21d7-412a-a7e8-afa1d157540c" SourceId="1" SourceUrl="http://localhost:1739/SvcComponentConfig.svc?xsd=xsd2" />
+    <MetadataFile FileName="SvcComponentConfig1.xsd" MetadataType="Schema" ID="aaa00894-21cc-484e-a635-a5cc63e5a8d9" SourceId="1" SourceUrl="http://localhost:1739/SvcComponentConfig.svc?xsd=xsd3" />
+    <MetadataFile FileName="SvcComponentConfig.wsdl" MetadataType="Wsdl" ID="189a6366-2c4d-413c-b603-4ff05a97172f" SourceId="1" SourceUrl="http://localhost:1739/SvcComponentConfig.svc?wsdl" />
+    <MetadataFile FileName="SvcComponentConfig2.xsd" MetadataType="Schema" ID="1377ca07-8f2d-4d3d-9227-ba65194f9bb0" SourceId="1" SourceUrl="http://localhost:1739/SvcComponentConfig.svc?xsd=xsd1" />
+    <MetadataFile FileName="SvcComponentConfig1.wsdl" MetadataType="Wsdl" ID="0746654f-e30f-41e1-ad6c-7934d7708f79" SourceId="1" SourceUrl="http://localhost:1739/SvcComponentConfig.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="SvcComponentConfig3.xsd" MetadataType="Schema" ID="f48877e8-10c3-4d91-af7d-d06c6e8b0590" SourceId="1" SourceUrl="http://localhost:1739/SvcComponentConfig.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

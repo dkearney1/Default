@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c871f29d-592b-4145-87a9-861907746ba9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>true</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:2121/SvcHostConfig.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SvcHostConfig.xsd" MetadataType="Schema" ID="94c998ae-ba90-4923-ba2f-2197e40df0bb" SourceId="1" SourceUrl="http://localhost:2121/SvcHostConfig.svc?xsd=xsd2" />
+    <MetadataFile FileName="SvcHostConfig1.xsd" MetadataType="Schema" ID="c8f6e1d2-e749-4a5f-b705-7e023cb6ef8f" SourceId="1" SourceUrl="http://localhost:2121/SvcHostConfig.svc?xsd=xsd0" />
+    <MetadataFile FileName="SvcHostConfig.disco" MetadataType="Disco" ID="90212097-6b34-4898-be1e-d93152a46e0b" SourceId="1" SourceUrl="http://localhost:2121/SvcHostConfig.svc?disco" />
+    <MetadataFile FileName="SvcHostConfig.wsdl" MetadataType="Wsdl" ID="a04dce0d-6430-4675-aae4-4403a4d6b87b" SourceId="1" SourceUrl="http://localhost:2121/SvcHostConfig.svc?wsdl" />
+    <MetadataFile FileName="SvcHostConfig2.xsd" MetadataType="Schema" ID="2f4851b2-2f62-4fc0-bf17-bd9f81e81401" SourceId="1" SourceUrl="http://localhost:2121/SvcHostConfig.svc?xsd=xsd1" />
+    <MetadataFile FileName="SvcHostConfig1.wsdl" MetadataType="Wsdl" ID="14e5a7ca-4a95-43db-a9b3-8c7d43468a93" SourceId="1" SourceUrl="http://localhost:2121/SvcHostConfig.svc?wsdl=wsdl0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

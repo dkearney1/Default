@@ -1,0 +1,268 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServiceHost", "WindowsServiceHost\WindowsServiceHost.csproj", "{82DEB83C-E0ED-48A3-9885-A8FE56411457}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5} = {9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServiceHostConfig", "WindowsServiceHostConfig\WindowsServiceHostConfig.csproj", "{D7C42288-EC08-4DBB-A3DC-8112100A59E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServiceComponentConfig", "WindowsServiceComponentConfig\WindowsServiceComponentConfig.csproj", "{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCOs", "POCOs\POCOs.csproj", "{88A01F75-75E1-4AFC-B977-0E8228705B3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCOProvider", "POCOProvider\POCOProvider.csproj", "{86ADAF47-5B18-4539-89E4-800B2D25304B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{6A5D7A0E-CF6C-45F3-A883-7A12910D2F41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHostEvents", "Events\ServiceHostEvents.csproj", "{072255DD-2587-4CC5-8838-AB6DB988407B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{76DE1B24-FADF-4ECF-82E1-BC7DEEB4256A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleEventWatcher", "ConsoleEventWatcher\ConsoleEventWatcher.csproj", "{CC1AC89B-A9A2-4D4C-8611-7E1F733A284E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5} = {9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHostCommands", "Commands\ServiceHostCommands.csproj", "{AB1E5BD6-41A3-493B-A79D-C7566FEA59CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Q and D Example Projects", "Q and D Example Projects", "{A39E5579-1072-44B4-ADBD-908C542BB9A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging", "Messaging\Messaging.csproj", "{2B337FFD-C12C-402B-97B9-391508C68148}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsServiceComponentInterface", "WindowsServiceComponentInterface\WindowsServiceComponentInterface.csproj", "{0E5C6100-8E66-4077-8299-C75EACC42E1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleServiceComponent", "SampleServiceComponent\SampleServiceComponent.csproj", "{88381557-916E-406C-8CC8-B3EF99453CA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventsBasics", "EventsBasics\EventsBasics.csproj", "{7893BC41-1311-4253-AA71-11A9FECA5ED7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandsBasics", "CommandsBasics\CommandsBasics.csproj", "{698E09FE-22C4-4207-AD7D-326236367BED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkBasics", "WorkBasics\WorkBasics.csproj", "{DADADEEA-5628-452E-86CF-178232F49213}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkMaker", "WorkMaker\WorkMaker.csproj", "{401D835C-AAB3-4BCD-B49E-60B92CEABCF2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5} = {9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces and Basics", "Interfaces and Basics", "{2C6101D0-0392-4C39-8AD4-073D950A5322}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows Service Host", "Windows Service Host", "{6AFF0071-D377-4446-A9F6-39315D12F0D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "POCO", "POCO", "{339BC523-2770-459F-9363-12988065F8A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F2D09EB7-1BE3-4807-88E2-55EDB330E1CF}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Job Scheduler", "Job Scheduler", "{47986F97-D890-43E5-B1AF-48DFD624E90C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobSchedulerComponent", "JobSchedulerComponent\JobSchedulerComponent.csproj", "{9D7CE86E-D037-4CD4-B16C-94A7A6B6B5B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "File Watcher", "File Watcher", "{BF997ABF-8A48-4B18-A33A-77E9617B0A45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileWatcherComponent", "FileWatcherComponent\FileWatcherComponent.csproj", "{B3B4DCB2-0902-4B66-A868-BC0D2BF6E558}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileWatcherEvents", "FileWatcherEvents\FileWatcherEvents.csproj", "{A2D99C19-7F2A-429C-AD70-062AAA378199}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 21
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dkearney1.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WindowsServiceHost\\WindowsServiceHost.csproj
+		SccProjectTopLevelParentUniqueName1 = WindowsServiceHost.sln
+		SccProjectName1 = WindowsServiceHost
+		SccLocalPath1 = WindowsServiceHost
+		SccProjectUniqueName2 = WindowsServiceHostConfig\\WindowsServiceHostConfig.csproj
+		SccProjectTopLevelParentUniqueName2 = WindowsServiceHost.sln
+		SccProjectName2 = WindowsServiceHostConfig
+		SccLocalPath2 = WindowsServiceHostConfig
+		SccProjectUniqueName3 = WindowsServiceComponentConfig\\WindowsServiceComponentConfig.csproj
+		SccProjectTopLevelParentUniqueName3 = WindowsServiceHost.sln
+		SccProjectName3 = WindowsServiceComponentConfig
+		SccLocalPath3 = WindowsServiceComponentConfig
+		SccProjectUniqueName4 = POCOs\\POCOs.csproj
+		SccProjectTopLevelParentUniqueName4 = WindowsServiceHost.sln
+		SccProjectName4 = POCOs
+		SccLocalPath4 = POCOs
+		SccProjectUniqueName5 = POCOProvider\\POCOProvider.csproj
+		SccProjectTopLevelParentUniqueName5 = WindowsServiceHost.sln
+		SccProjectName5 = POCOProvider
+		SccLocalPath5 = POCOProvider
+		SccProjectUniqueName6 = DataModel\\DataModel.csproj
+		SccProjectName6 = DataModel
+		SccLocalPath6 = DataModel
+		SccProjectUniqueName7 = TestConsole\\TestConsole.csproj
+		SccProjectTopLevelParentUniqueName7 = WindowsServiceHost.sln
+		SccProjectName7 = TestConsole
+		SccLocalPath7 = TestConsole
+		SccProjectUniqueName8 = ConsoleEventWatcher\\ConsoleEventWatcher.csproj
+		SccProjectTopLevelParentUniqueName8 = WindowsServiceHost.sln
+		SccProjectName8 = ConsoleEventWatcher
+		SccLocalPath8 = ConsoleEventWatcher
+		SccProjectUniqueName9 = Messaging\\Messaging.csproj
+		SccProjectName9 = Messaging
+		SccLocalPath9 = Messaging
+		SccProjectUniqueName10 = WindowsServiceComponentInterface\\WindowsServiceComponentInterface.csproj
+		SccProjectTopLevelParentUniqueName10 = WindowsServiceHost.sln
+		SccProjectName10 = WindowsServiceComponentInterface
+		SccLocalPath10 = WindowsServiceComponentInterface
+		SccProjectUniqueName11 = SampleServiceComponent\\SampleServiceComponent.csproj
+		SccProjectTopLevelParentUniqueName11 = WindowsServiceHost.sln
+		SccProjectName11 = SampleServiceComponent
+		SccLocalPath11 = SampleServiceComponent
+		SccProjectUniqueName12 = EventsBasics\\EventsBasics.csproj
+		SccProjectTopLevelParentUniqueName12 = WindowsServiceHost.sln
+		SccProjectName12 = EventsBasics
+		SccLocalPath12 = EventsBasics
+		SccProjectUniqueName13 = Events\\ServiceHostEvents.csproj
+		SccProjectTopLevelParentUniqueName13 = WindowsServiceHost.sln
+		SccProjectName13 = Events
+		SccLocalPath13 = Events
+		SccProjectUniqueName14 = CommandsBasics\\CommandsBasics.csproj
+		SccProjectTopLevelParentUniqueName14 = WindowsServiceHost.sln
+		SccProjectName14 = CommandsBasics
+		SccLocalPath14 = CommandsBasics
+		SccProjectUniqueName15 = Commands\\ServiceHostCommands.csproj
+		SccProjectTopLevelParentUniqueName15 = WindowsServiceHost.sln
+		SccProjectName15 = Commands
+		SccLocalPath15 = Commands
+		SccProjectUniqueName16 = WorkBasics\\WorkBasics.csproj
+		SccProjectTopLevelParentUniqueName16 = WindowsServiceHost.sln
+		SccProjectName16 = WorkBasics
+		SccLocalPath16 = WorkBasics
+		SccProjectUniqueName17 = WorkMaker\\WorkMaker.csproj
+		SccProjectTopLevelParentUniqueName17 = WindowsServiceHost.sln
+		SccProjectName17 = WorkMaker
+		SccLocalPath17 = WorkMaker
+		SccProjectUniqueName18 = JobSchedulerComponent\\JobSchedulerComponent.csproj
+		SccProjectTopLevelParentUniqueName18 = WindowsServiceHost.sln
+		SccProjectName18 = JobSchedulerComponent
+		SccLocalPath18 = JobSchedulerComponent
+		SccProjectUniqueName19 = FileWatcherComponent\\FileWatcherComponent.csproj
+		SccProjectTopLevelParentUniqueName19 = WindowsServiceHost.sln
+		SccProjectName19 = FileWatcherComponent
+		SccLocalPath19 = FileWatcherComponent
+		SccProjectUniqueName20 = FileWatcherEvents\\FileWatcherEvents.csproj
+		SccProjectTopLevelParentUniqueName20 = WindowsServiceHost.sln
+		SccProjectName20 = FileWatcherEvents
+		SccLocalPath20 = FileWatcherEvents
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82DEB83C-E0ED-48A3-9885-A8FE56411457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DEB83C-E0ED-48A3-9885-A8FE56411457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DEB83C-E0ED-48A3-9885-A8FE56411457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DEB83C-E0ED-48A3-9885-A8FE56411457}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7C42288-EC08-4DBB-A3DC-8112100A59E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7C42288-EC08-4DBB-A3DC-8112100A59E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7C42288-EC08-4DBB-A3DC-8112100A59E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7C42288-EC08-4DBB-A3DC-8112100A59E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88A01F75-75E1-4AFC-B977-0E8228705B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A01F75-75E1-4AFC-B977-0E8228705B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A01F75-75E1-4AFC-B977-0E8228705B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A01F75-75E1-4AFC-B977-0E8228705B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86ADAF47-5B18-4539-89E4-800B2D25304B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86ADAF47-5B18-4539-89E4-800B2D25304B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86ADAF47-5B18-4539-89E4-800B2D25304B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86ADAF47-5B18-4539-89E4-800B2D25304B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A5D7A0E-CF6C-45F3-A883-7A12910D2F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A5D7A0E-CF6C-45F3-A883-7A12910D2F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A5D7A0E-CF6C-45F3-A883-7A12910D2F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A5D7A0E-CF6C-45F3-A883-7A12910D2F41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{072255DD-2587-4CC5-8838-AB6DB988407B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{072255DD-2587-4CC5-8838-AB6DB988407B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{072255DD-2587-4CC5-8838-AB6DB988407B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{072255DD-2587-4CC5-8838-AB6DB988407B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76DE1B24-FADF-4ECF-82E1-BC7DEEB4256A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76DE1B24-FADF-4ECF-82E1-BC7DEEB4256A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76DE1B24-FADF-4ECF-82E1-BC7DEEB4256A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76DE1B24-FADF-4ECF-82E1-BC7DEEB4256A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC1AC89B-A9A2-4D4C-8611-7E1F733A284E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC1AC89B-A9A2-4D4C-8611-7E1F733A284E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC1AC89B-A9A2-4D4C-8611-7E1F733A284E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC1AC89B-A9A2-4D4C-8611-7E1F733A284E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB1E5BD6-41A3-493B-A79D-C7566FEA59CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB1E5BD6-41A3-493B-A79D-C7566FEA59CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB1E5BD6-41A3-493B-A79D-C7566FEA59CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB1E5BD6-41A3-493B-A79D-C7566FEA59CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B337FFD-C12C-402B-97B9-391508C68148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B337FFD-C12C-402B-97B9-391508C68148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B337FFD-C12C-402B-97B9-391508C68148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B337FFD-C12C-402B-97B9-391508C68148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E5C6100-8E66-4077-8299-C75EACC42E1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5C6100-8E66-4077-8299-C75EACC42E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5C6100-8E66-4077-8299-C75EACC42E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5C6100-8E66-4077-8299-C75EACC42E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88381557-916E-406C-8CC8-B3EF99453CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88381557-916E-406C-8CC8-B3EF99453CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88381557-916E-406C-8CC8-B3EF99453CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88381557-916E-406C-8CC8-B3EF99453CA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7893BC41-1311-4253-AA71-11A9FECA5ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7893BC41-1311-4253-AA71-11A9FECA5ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7893BC41-1311-4253-AA71-11A9FECA5ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7893BC41-1311-4253-AA71-11A9FECA5ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{698E09FE-22C4-4207-AD7D-326236367BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{698E09FE-22C4-4207-AD7D-326236367BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{698E09FE-22C4-4207-AD7D-326236367BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{698E09FE-22C4-4207-AD7D-326236367BED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DADADEEA-5628-452E-86CF-178232F49213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DADADEEA-5628-452E-86CF-178232F49213}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DADADEEA-5628-452E-86CF-178232F49213}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DADADEEA-5628-452E-86CF-178232F49213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{401D835C-AAB3-4BCD-B49E-60B92CEABCF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{401D835C-AAB3-4BCD-B49E-60B92CEABCF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{401D835C-AAB3-4BCD-B49E-60B92CEABCF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{401D835C-AAB3-4BCD-B49E-60B92CEABCF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D7CE86E-D037-4CD4-B16C-94A7A6B6B5B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D7CE86E-D037-4CD4-B16C-94A7A6B6B5B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D7CE86E-D037-4CD4-B16C-94A7A6B6B5B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D7CE86E-D037-4CD4-B16C-94A7A6B6B5B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3B4DCB2-0902-4B66-A868-BC0D2BF6E558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3B4DCB2-0902-4B66-A868-BC0D2BF6E558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3B4DCB2-0902-4B66-A868-BC0D2BF6E558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3B4DCB2-0902-4B66-A868-BC0D2BF6E558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D99C19-7F2A-429C-AD70-062AAA378199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D99C19-7F2A-429C-AD70-062AAA378199}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D99C19-7F2A-429C-AD70-062AAA378199}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D99C19-7F2A-429C-AD70-062AAA378199}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7C42288-EC08-4DBB-A3DC-8112100A59E6} = {6AFF0071-D377-4446-A9F6-39315D12F0D1}
+		{9F353BA8-2BEF-4BE0-8035-541BF4D8C2D5} = {6AFF0071-D377-4446-A9F6-39315D12F0D1}
+		{072255DD-2587-4CC5-8838-AB6DB988407B} = {6AFF0071-D377-4446-A9F6-39315D12F0D1}
+		{AB1E5BD6-41A3-493B-A79D-C7566FEA59CE} = {6AFF0071-D377-4446-A9F6-39315D12F0D1}
+		{82DEB83C-E0ED-48A3-9885-A8FE56411457} = {6AFF0071-D377-4446-A9F6-39315D12F0D1}
+		{86ADAF47-5B18-4539-89E4-800B2D25304B} = {339BC523-2770-459F-9363-12988065F8A0}
+		{88A01F75-75E1-4AFC-B977-0E8228705B3E} = {339BC523-2770-459F-9363-12988065F8A0}
+		{CC1AC89B-A9A2-4D4C-8611-7E1F733A284E} = {A39E5579-1072-44B4-ADBD-908C542BB9A8}
+		{76DE1B24-FADF-4ECF-82E1-BC7DEEB4256A} = {A39E5579-1072-44B4-ADBD-908C542BB9A8}
+		{88381557-916E-406C-8CC8-B3EF99453CA5} = {A39E5579-1072-44B4-ADBD-908C542BB9A8}
+		{401D835C-AAB3-4BCD-B49E-60B92CEABCF2} = {A39E5579-1072-44B4-ADBD-908C542BB9A8}
+		{7893BC41-1311-4253-AA71-11A9FECA5ED7} = {2C6101D0-0392-4C39-8AD4-073D950A5322}
+		{698E09FE-22C4-4207-AD7D-326236367BED} = {2C6101D0-0392-4C39-8AD4-073D950A5322}
+		{DADADEEA-5628-452E-86CF-178232F49213} = {2C6101D0-0392-4C39-8AD4-073D950A5322}
+		{0E5C6100-8E66-4077-8299-C75EACC42E1A} = {2C6101D0-0392-4C39-8AD4-073D950A5322}
+		{9D7CE86E-D037-4CD4-B16C-94A7A6B6B5B0} = {47986F97-D890-43E5-B1AF-48DFD624E90C}
+		{B3B4DCB2-0902-4B66-A868-BC0D2BF6E558} = {BF997ABF-8A48-4B18-A33A-77E9617B0A45}
+		{A2D99C19-7F2A-429C-AD70-062AAA378199} = {BF997ABF-8A48-4B18-A33A-77E9617B0A45}
+	EndGlobalSection
+EndGlobal
