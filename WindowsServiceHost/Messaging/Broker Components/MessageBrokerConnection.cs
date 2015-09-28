@@ -29,7 +29,7 @@ namespace DKK.Messaging
 
 		private IConnection CreateConnection()
 		{
-			ConnectionFactory factory = new ConnectionFactory();
+            var factory = new ConnectionFactory();
 			factory.HostName = this.Server;
 			factory.Port = this.Port;
 			factory.VirtualHost = this.VHost;

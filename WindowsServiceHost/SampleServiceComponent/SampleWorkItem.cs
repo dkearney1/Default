@@ -15,8 +15,8 @@ namespace DKK.SampleServiceComponent
 		{
 			this.ItemType = "SampleWorkItem";
 			this.ItemId = Guid.NewGuid();
-			long ticksToday = DateTime.Now.Ticks - DateTime.Today.Ticks;
-			TimeSpan ts = new TimeSpan(ticksToday);
+            var ticksToday = DateTime.Now.Ticks - DateTime.Today.Ticks;
+            var ts = new TimeSpan(ticksToday);
 			this.WorkDelay = TimeSpan.FromMilliseconds(new Random(Convert.ToInt32(ticksToday/TimeSpan.TicksPerMillisecond)).Next(1000, 10000));
 		}
 

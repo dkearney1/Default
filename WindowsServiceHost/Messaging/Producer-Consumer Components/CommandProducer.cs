@@ -63,7 +63,7 @@ namespace DKK.Messaging
 			if (!timeout.HasValue)
 				timeout = TimeSpan.MaxValue;
 
-			IBasicProperties props = this.Channel.CreateBasicProperties();
+            var props = this.Channel.CreateBasicProperties();
 
 			//props.AppId;
 			//props.ClusterId;
@@ -77,10 +77,10 @@ namespace DKK.Messaging
 			//props.ProtocolClassName;
 			//props.ReplyTo;
 			props.ReplyToAddress = new PublicationAddress(this.CmdExchange.ExchangeType, this.CmdExchange.Name, this.PrivateQueue.Name);
-			//props.Timestamp;
-			//props.UserId;
+            //props.Timestamp;
+            //props.UserId;
 
-			byte[] reqBytes = CommandSerializer.Serialize(command);
+            var reqBytes = CommandSerializer.Serialize(command);
 			props.ContentEncoding = CommandSerializer.ContentEncoding;
 			props.ContentType = CommandSerializer.ContentType;
 			props.Type = command.GetType().FullName;
@@ -93,7 +93,7 @@ namespace DKK.Messaging
 
 			using (CancellationTokenSource cts = new CancellationTokenSource())
 			{
-				CancellationToken ct = cts.Token;
+                var ct = cts.Token;
 
 				Task replyTask = null;
 				if (command.CorrelationId.HasValue)
@@ -102,10 +102,10 @@ namespace DKK.Messaging
 
 					replyTask = Task.Run(() =>
 					{
-						bool autoAck = false;
-						using (Subscription subscription = new Subscription(this.Channel, this.PrivateQueue.Name, autoAck))
+                        var autoAck = false;
+						using (var subscription = new Subscription(this.Channel, this.PrivateQueue.Name, autoAck))
 						{
-							int subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
+                            var subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
 
 							while (!ct.IsCancellationRequested)
 							{

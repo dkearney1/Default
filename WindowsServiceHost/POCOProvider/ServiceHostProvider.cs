@@ -36,7 +36,7 @@ namespace DKK.POCOProvider
 			if (ServiceHost.Id == Guid.Empty)
 				throw new ArgumentNullException("ServiceHost");
 
-			int rowVersion = ServiceHost.RowVersion;
+            var rowVersion = ServiceHost.RowVersion;
 
 			var query = Query.And(
 									Query<ServiceHost>.EQ(e => e.Id, ServiceHost.Id),
@@ -58,7 +58,7 @@ namespace DKK.POCOProvider
 			if (ServiceHost.Id == Guid.Empty)
 				throw new ArgumentNullException("ServiceHost");
 
-			int rowVersion = ServiceHost.RowVersion;
+            var rowVersion = ServiceHost.RowVersion;
 
 			var query = Query.And(
 									Query<ServiceHost>.EQ(e => e.Id, ServiceHost.Id),

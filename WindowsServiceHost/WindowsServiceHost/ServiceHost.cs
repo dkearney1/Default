@@ -57,7 +57,7 @@ namespace DKK.WindowsServiceHost
 
 			this.SetServiceState(State.SERVICE_START_PENDING);
 
-			FileInfo fi = new FileInfo(Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().CodeBase));
+            var fi = new FileInfo(Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().CodeBase));
 			DebugTrace(string.Format("         EXE Info: {0}", fi.Name));
 			DebugTrace(string.Format("      EXE Created: {0}", fi.CreationTime));
 			DebugTrace(string.Format("     EXE Modified: {0}", fi.LastWriteTime));
@@ -137,7 +137,7 @@ namespace DKK.WindowsServiceHost
 
 		private void SetServiceState(State state)
 		{
-			IntPtr handle = this.ServiceHandle;
+            var handle = this.ServiceHandle;
 			myServiceStatus.currentState = (int)state;
 			if (handle != IntPtr.Zero)
 				NativeMethods.SetServiceStatus(handle, ref myServiceStatus);
@@ -148,9 +148,9 @@ namespace DKK.WindowsServiceHost
 		{
 			DKKWindowsServiceHostEventSource.Log.DebugTrace("Retrieving configuration");
 
-			// Retrieve the "settings" from the Configuration Service
-			SvcHostConfig.ISvcHostConfig configClient = new SvcHostConfig.SvcHostConfigClient("BasicHttpBinding_ISvcHostConfig", Properties.Settings.Default.SvcHostConfigURL);
-			List<KeyValuePair<string, string>> settings = configClient.GetConfig(new SvcHostConfig.GetConfigRequest()).GetConfigResult;
+            // Retrieve the "settings" from the Configuration Service
+            var configClient = new SvcHostConfig.SvcHostConfigClient("BasicHttpBinding_ISvcHostConfig", Properties.Settings.Default.SvcHostConfigURL);
+            var settings = configClient.GetConfig(new SvcHostConfig.GetConfigRequest()).GetConfigResult;
 
 			// On Service Startup, only Update if the Settings say to.
 			// All other times, Update.
@@ -160,23 +160,23 @@ namespace DKK.WindowsServiceHost
 				return;
 			}
 
-			string updateLocation = settings.SingleOrDefault(s => s.Key == "FileUpdateLocation").Value;
+            var updateLocation = settings.SingleOrDefault(s => s.Key == "FileUpdateLocation").Value;
 			if (string.IsNullOrWhiteSpace(updateLocation))
 			{
 				DKKWindowsServiceHostEventSource.Log.DebugTrace("No update location specified");
 				return;
 			}
 
-			List<string> ignoredSpecs = new List<string>();
+            var ignoredSpecs = new List<string>();
 
-			string tmp = settings.SingleOrDefault(s => s.Key == "FileUpdateIgnoreFileSpecs").Value;
+            var tmp = settings.SingleOrDefault(s => s.Key == "FileUpdateIgnoreFileSpecs").Value;
 			if (tmp != null)
 			{
 				ignoredSpecs.AddRange(tmp.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
 				DKKWindowsServiceHostEventSource.Log.DebugTrace(string.Format("Ignoring {0}", string.Join(", ", ignoredSpecs)));
 			}
 
-			FileLoader fl = new FileLoader(
+            var fl = new FileLoader(
 									updateLocation,
 									Environment.CurrentDirectory,
 									ignoredSpecs);
@@ -202,7 +202,7 @@ namespace DKK.WindowsServiceHost
 
 			string configURL = Properties.Settings.Default.SvcHostConfigURL;
 
-			AppDomainSetup adSetup = new AppDomainSetup();
+            var adSetup = new AppDomainSetup();
 			adSetup.ApplicationName = "ServiceHostWorker";
 			this.WorkerDomain = AppDomain.CreateDomain("ServiceHostWorker", null, adSetup);
 			this.ServiceHostWorker = this.WorkerDomain.CreateInstanceAndUnwrap(this.GetType().Assembly.FullName, "DKK.WindowsServiceHost.ServiceHostWorker") as ServiceHostWorker;

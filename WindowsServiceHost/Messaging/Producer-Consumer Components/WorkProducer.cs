@@ -68,12 +68,12 @@ namespace DKK.Messaging
 			if (!this.Channel.IsOpen)
 				throw new InvalidOperationException("Channel is not open");
 
-			byte[] bytes = WorkSerializer.Serialize(work);
+            var bytes = WorkSerializer.Serialize(work);
 			properties.ContentEncoding = WorkSerializer.ContentEncoding;
 			properties.ContentType = WorkSerializer.ContentType;
 			properties.Type = work.GetType().FullName;
 
-			ExchangeSettings WorkExchange = Constants.WorkExchangeSettings;
+            var WorkExchange = Constants.WorkExchangeSettings;
 			this.Channel.ExchangeDeclare(WorkExchange.Name, WorkExchange.ExchangeType, WorkExchange.Durable, WorkExchange.AutoDelete, WorkExchange.Arguments);
 			this.Channel.BasicPublish(WorkExchange.Name, routingKey, properties, bytes);
 		}

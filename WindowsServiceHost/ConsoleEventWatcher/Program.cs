@@ -16,24 +16,24 @@ namespace DKK.ConsoleEventWatcher
 	{
 		static void Main(string[] args)
 		{
-			Dictionary<string, MessageBrokerConnection> messageBrokerConnections = new Dictionary<string, MessageBrokerConnection>();
+            var messageBrokerConnections = new Dictionary<string, MessageBrokerConnection>();
 
 			PopulateMessageBrokerConnections(messageBrokerConnections);
-			Dictionary<string, IEventConsumer> eventConsumers = new Dictionary<string, IEventConsumer>();
+            var eventConsumers = new Dictionary<string, IEventConsumer>();
 
-			foreach (string environment in messageBrokerConnections.Keys)
+			foreach (var environment in messageBrokerConnections.Keys)
 			{
-				Action<IBasicProperties, IEvent> consoleWriteLine = new Action<IBasicProperties, IEvent>((props, evnt) => Console.WriteLine("{0}: {1:G}->{2}", environment, evnt.Created.ToLocalTime(), evnt.RoutingKey));
-				Action<IBasicProperties, IEvent> consoleWriteStatus = new Action<IBasicProperties, IEvent>((props, evnt) =>
+                var consoleWriteLine = new Action<IBasicProperties, IEvent>((props, evnt) => Console.WriteLine("{0}: {1:G}->{2}", environment, evnt.Created.ToLocalTime(), evnt.RoutingKey));
+                var consoleWriteStatus = new Action<IBasicProperties, IEvent>((props, evnt) =>
 				{
-					ServiceComponentStatus scs = evnt as ServiceComponentStatus;
+                    var scs = evnt as ServiceComponentStatus;
 					if (scs != null)
 						Console.WriteLine("{0}: Status: {1} for {2}ms, SubStatus: {3} for {4}ms", environment, scs.Status, scs.TimeInStatus.TotalMilliseconds, scs.SubStatus, scs.TimeInSubStatus.TotalMilliseconds);
 					else
 						Console.WriteLine("{0}: {1:G}->{2}", environment, evnt.Created.ToLocalTime(), evnt.RoutingKey);
 				});
 
-				IEventConsumer ec2 = new EventConsumer(messageBrokerConnections[environment].Connection);
+                var ec2 = new EventConsumer(messageBrokerConnections[environment].Connection);
 				eventConsumers.Add(environment, ec2);
 
 				#region Service Host events
@@ -73,11 +73,11 @@ namespace DKK.ConsoleEventWatcher
 				#endregion
 			}
 
-			bool exit = false;
+            var exit = false;
 			Console.WriteLine("Press x to exit");
 			do
 			{
-				ConsoleKeyInfo cki = Console.ReadKey(true);
+                var cki = Console.ReadKey(true);
 				if (string.Compare("x", new string(cki.KeyChar, 1), true, CultureInfo.InvariantCulture) == 0)
 					exit = true;
 			}
@@ -93,12 +93,12 @@ namespace DKK.ConsoleEventWatcher
 
 		private static void PopulateMessageBrokerConnections(Dictionary<string, MessageBrokerConnection> messageBrokerConnections)
 		{
-			ISvcComponentConfig configClient = new SvcComponentConfigClient();
-			IEnumerable<string> environments = configClient.GetEnvironments();
-			foreach (string environment in environments)
+            var configClient = new SvcComponentConfigClient();
+            var environments = configClient.GetEnvironments();
+			foreach (var environment in environments)
 			{
-				List<KeyValuePair<string, string>> envConfig = configClient.GetEnvironmentConfig(environment);
-				IEnumerable<KeyValuePair<string, string>> rabbitEnv = envConfig.Where(kvp => kvp.Key.StartsWith("RabbitMQ"));
+                var envConfig = configClient.GetEnvironmentConfig(environment);
+                var rabbitEnv = envConfig.Where(kvp => kvp.Key.StartsWith("RabbitMQ"));
 				messageBrokerConnections.Add(environment, new MessageBrokerConnection(rabbitEnv));
 			}
 		}

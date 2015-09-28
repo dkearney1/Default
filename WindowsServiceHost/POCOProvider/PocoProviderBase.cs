@@ -22,10 +22,10 @@ namespace DKK.POCOProvider
 		{
 			this.MongoEnv = mongoEnv;
 
-			string server = this.MongoEnv.Single(kvp => kvp.Key == "MongoServer").Value;
-			int port = int.Parse(this.MongoEnv.Single(kvp => kvp.Key == "MongoPort").Value);
+			var server = this.MongoEnv.Single(kvp => kvp.Key == "MongoServer").Value;
+            var port = int.Parse(this.MongoEnv.Single(kvp => kvp.Key == "MongoPort").Value);
 
-			string conString = string.Format("mongodb://{0}:{1}", server, port);
+            var conString = string.Format("mongodb://{0}:{1}", server, port);
 			this.mongoClient = new MongoClient(conString);
 		}
 
@@ -50,15 +50,15 @@ namespace DKK.POCOProvider
 
 		protected WriteConcernResult Insert(T item)
 		{
-			MongoDatabase mongodb = this.Connect();
+            var mongodb = this.Connect();
 			return mongodb.GetCollection<T>(this.collectionName).Insert<T>(item);
 		}
 
 		protected FindAndModifyResult FindAndModify(IMongoQuery query, IMongoUpdate update)
 		{
-			MongoDatabase mongodb = this.Connect();
-			Trace.WriteLine(string.Format("Find \"{0}\", Modify \"{1}\"", query, update));
-			FindAndModifyArgs args = new FindAndModifyArgs()
+            var mongodb = this.Connect();
+			Debug.WriteLine(string.Format("Find \"{0}\", Modify \"{1}\"", query, update));
+            var args = new FindAndModifyArgs()
 			{
 				Query = query,
 				Update = update,
@@ -70,7 +70,7 @@ namespace DKK.POCOProvider
 
 		protected WriteConcernResult Delete(IMongoQuery query)
 		{
-			MongoDatabase mongodb = this.Connect();
+            var mongodb = this.Connect();
 			return mongodb.GetCollection<T>(this.collectionName).Remove(query);
 		}
 	}

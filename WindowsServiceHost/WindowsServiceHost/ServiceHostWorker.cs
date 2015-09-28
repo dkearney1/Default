@@ -58,8 +58,8 @@ namespace DKK.WindowsServiceHost
 
 		private void Start(string environment)
 		{
-			EnvironmentComponents envConfig = this.Environments[environment];
-			IEventProducer eventProducer = envConfig.EventProducer;
+            var envConfig = this.Environments[environment];
+            var eventProducer = envConfig.EventProducer;
 
 			envConfig
 					.Components
@@ -86,8 +86,8 @@ namespace DKK.WindowsServiceHost
 
 		private void Stop(string environment)
 		{
-			EnvironmentComponents envConfig = this.Environments[environment];
-			IEventProducer eventProducer = envConfig.EventProducer;
+            var envConfig = this.Environments[environment];
+            var eventProducer = envConfig.EventProducer;
 
 			envConfig
 					.Components
@@ -114,8 +114,8 @@ namespace DKK.WindowsServiceHost
 
 		private void Pause(string environment)
 		{
-			EnvironmentComponents envConfig = this.Environments[environment];
-			IEventProducer eventProducer = envConfig.EventProducer;
+            var envConfig = this.Environments[environment];
+            var eventProducer = envConfig.EventProducer;
 
 			envConfig
 					.Components
@@ -142,8 +142,8 @@ namespace DKK.WindowsServiceHost
 
 		private void Continue(string environment)
 		{
-			EnvironmentComponents envConfig = this.Environments[environment];
-			IEventProducer eventProducer = envConfig.EventProducer;
+            var envConfig = this.Environments[environment];
+            var eventProducer = envConfig.EventProducer;
 
 			envConfig
 					.Components
@@ -164,8 +164,8 @@ namespace DKK.WindowsServiceHost
 
 		private void LoadEnvironments()
 		{
-			SvcComponentConfig.ISvcComponentConfig configClient = new SvcComponentConfig.SvcComponentConfigClient();
-			IEnumerable<string> environments = configClient.GetEnvironments(new SvcComponentConfig.GetEnvironmentsRequest()).GetEnvironmentsResult;
+            var configClient = new SvcComponentConfig.SvcComponentConfigClient();
+            var environments = configClient.GetEnvironments(new SvcComponentConfig.GetEnvironmentsRequest()).GetEnvironmentsResult;
 
 			foreach (var environment in environments)
 			{
@@ -178,11 +178,11 @@ namespace DKK.WindowsServiceHost
 
 		private void LoadConfiguration(string environment)
 		{
-			EnvironmentComponents envConfig = this.Environments[environment];
-			List<KeyValuePair<string, string>> currConfig = envConfig.Config;
+            var envConfig = this.Environments[environment];
+            var currConfig = envConfig.Config;
 
-			SvcComponentConfig.ISvcComponentConfig configClient = new SvcComponentConfig.SvcComponentConfigClient();
-			List<KeyValuePair<string, string>> newConfig = configClient.GetEnvironmentConfig(new SvcComponentConfig.GetEnvironmentConfigRequest(environment)).GetEnvironmentConfigResult;
+            var configClient = new SvcComponentConfig.SvcComponentConfigClient();
+            var newConfig = configClient.GetEnvironmentConfig(new SvcComponentConfig.GetEnvironmentConfigRequest(environment)).GetEnvironmentConfigResult;
 
 			if (!currConfig.SequenceEqual(newConfig))
 			{
@@ -194,8 +194,8 @@ namespace DKK.WindowsServiceHost
 
 		private void ManageMessageBrokerConnection(EnvironmentComponents envConfig)
 		{
-			string environment = envConfig.Environment;
-			IEnumerable<KeyValuePair<string, string>> rabbitEnv = envConfig.Config.Where(kvp => kvp.Key.StartsWith("RabbitMQ"));
+            var environment = envConfig.Environment;
+            var rabbitEnv = envConfig.Config.Where(kvp => kvp.Key.StartsWith("RabbitMQ"));
 
 			if (envConfig.MessageBrokerConnection == null)
 			{
@@ -205,11 +205,11 @@ namespace DKK.WindowsServiceHost
 			}
 			else
 			{
-				MessageBrokerConnection existingConnection = envConfig.MessageBrokerConnection;
+                var existingConnection = envConfig.MessageBrokerConnection;
 
-				string server = rabbitEnv.Single(kvp => kvp.Key == "RabbitMQServer").Value;
-				int port = Convert.ToInt32(rabbitEnv.Single(kvp => kvp.Key == "RabbitMQPort").Value);
-				string vHost = rabbitEnv.Single(kvp => kvp.Key == "RabbitMQVHost").Value;
+                var server = rabbitEnv.Single(kvp => kvp.Key == "RabbitMQServer").Value;
+                var port = Convert.ToInt32(rabbitEnv.Single(kvp => kvp.Key == "RabbitMQPort").Value);
+                var vHost = rabbitEnv.Single(kvp => kvp.Key == "RabbitMQVHost").Value;
 
 				if (existingConnection.Server != server ||
 					existingConnection.Port != port ||
@@ -237,7 +237,7 @@ namespace DKK.WindowsServiceHost
 			#region ReloadFiles
 			envConfig.CommandConsumer.RegisterCommandHandler<ReloadFiles>((props, cmd) =>
 			{
-				ICommand reply = new ReloadFilesAck(cmd);
+				var reply = new ReloadFilesAck(cmd) as ICommand;
 
 				try
 				{
@@ -245,7 +245,7 @@ namespace DKK.WindowsServiceHost
 					this.Reloader.Reload();
 				}
 				catch
-				{ reply = new ReloadFilesNack(cmd); }
+				{ reply = new ReloadFilesNack(cmd) as ICommand; }
 
 				return reply;
 			}); 
@@ -254,7 +254,7 @@ namespace DKK.WindowsServiceHost
 			#region ReloadConfiguration
 			envConfig.CommandConsumer.RegisterCommandHandler<ReloadConfiguration>((props, cmd) =>
 			{
-				ICommand reply = new ReloadConfigurationAck(cmd);
+				var reply = new ReloadConfigurationAck(cmd) as ICommand;
 				string environment = envConfig.Environment;
 
 				try
@@ -263,7 +263,7 @@ namespace DKK.WindowsServiceHost
 					this.LoadConfiguration(environment);
 				}
 				catch
-				{ reply = new ReloadConfigurationNack(cmd); }
+				{ reply = new ReloadConfigurationNack(cmd) as ICommand; }
 
 				return reply;
 			});
@@ -272,7 +272,7 @@ namespace DKK.WindowsServiceHost
 			#region Start Component
 			envConfig.CommandConsumer.RegisterCommandHandler<StartComponent>((props, cmd) =>
 			{
-				ICommand reply = new StartComponentAck(cmd);
+				var reply = new StartComponentAck(cmd) as ICommand;
 				string environment = envConfig.Environment;
 
 				try
@@ -281,7 +281,7 @@ namespace DKK.WindowsServiceHost
 					r.Start(envConfig.EventProducer);
 				}
 				catch
-				{ reply = new StartComponentNack(cmd); }
+				{ reply = new StartComponentNack(cmd) as ICommand; }
 
 				return reply;
 			});
@@ -290,7 +290,7 @@ namespace DKK.WindowsServiceHost
 			#region Stop Component
 			envConfig.CommandConsumer.RegisterCommandHandler<StopComponent>((props, cmd) =>
 			{
-				ICommand reply = new StopComponentAck(cmd);
+				var reply = new StopComponentAck(cmd) as ICommand;
 				string environment = envConfig.Environment;
 
 				try
@@ -299,7 +299,7 @@ namespace DKK.WindowsServiceHost
 					r.Stop(envConfig.EventProducer);
 				}
 				catch
-				{ reply = new StopComponentNack(cmd); }
+				{ reply = new StopComponentNack(cmd) as ICommand; }
 
 				return reply;
 			});
@@ -308,7 +308,7 @@ namespace DKK.WindowsServiceHost
 			#region Activate Component
 			envConfig.CommandConsumer.RegisterCommandHandler<ActivateComponent>((props, cmd) =>
 			{
-				ICommand reply = new ActivateComponentAck(cmd);
+				var reply = new ActivateComponentAck(cmd) as ICommand;
 				string environment = envConfig.Environment;
 
 				try
@@ -317,7 +317,7 @@ namespace DKK.WindowsServiceHost
 					r.Activate(envConfig.EventProducer);
 				}
 				catch
-				{ reply = new ActivateComponentNack(cmd); }
+				{ reply = new ActivateComponentNack(cmd) as ICommand; }
 
 				return reply;
 			});
@@ -326,7 +326,7 @@ namespace DKK.WindowsServiceHost
 			#region Deactivate Component
 			envConfig.CommandConsumer.RegisterCommandHandler<DeactivateComponent>((props, cmd) =>
 			{
-				ICommand reply = new DeactivateComponentAck(cmd);
+				var reply = new DeactivateComponentAck(cmd) as ICommand;
 				string environment = envConfig.Environment;
 
 				try
@@ -335,7 +335,7 @@ namespace DKK.WindowsServiceHost
 					r.Deactivate(envConfig.EventProducer);
 				}
 				catch
-				{ reply = new DeactivateComponentNack(cmd); }
+				{ reply = new DeactivateComponentNack(cmd) as ICommand; }
 
 				return reply;
 			});
@@ -344,7 +344,7 @@ namespace DKK.WindowsServiceHost
 			#region Pause Component
 			envConfig.CommandConsumer.RegisterCommandHandler<PauseComponent>((props, cmd) =>
 			{
-				ICommand reply = new PauseComponentAck(cmd);
+				var reply = new PauseComponentAck(cmd) as ICommand;
 				string environment = envConfig.Environment;
 
 				try
@@ -353,7 +353,7 @@ namespace DKK.WindowsServiceHost
 					r.Pause(envConfig.EventProducer);
 				}
 				catch
-				{ reply = new PauseComponentNack(cmd); }
+				{ reply = new PauseComponentNack(cmd) as ICommand; }
 
 				return reply;
 			});
@@ -362,7 +362,7 @@ namespace DKK.WindowsServiceHost
 			#region Continue Component
 			envConfig.CommandConsumer.RegisterCommandHandler<ContinueComponent>((props, cmd) =>
 			{
-				ICommand reply = new ContinueComponentAck(cmd);
+				var reply = new ContinueComponentAck(cmd) as ICommand;
 				string environment = envConfig.Environment;
 
 				try
@@ -371,7 +371,7 @@ namespace DKK.WindowsServiceHost
 					r.Continue(envConfig.EventProducer);
 				}
 				catch
-				{ reply = new ContinueComponentNack(cmd); }
+				{ reply = new ContinueComponentNack(cmd) as ICommand; }
 
 				return reply;
 			});
@@ -409,15 +409,15 @@ namespace DKK.WindowsServiceHost
 
 		private void ManageServiceComponents(EnvironmentComponents envComponents)
 		{
-			string environment = envComponents.Environment;
-			IEnumerable<KeyValuePair<string, string>> mongoEnv = envComponents.Config.Where(kvp => kvp.Key.StartsWith("Mongo"));
+			var environment = envComponents.Environment;
+            var mongoEnv = envComponents.Config.Where(kvp => kvp.Key.StartsWith("Mongo"));
 
-			ServiceHostProvider provider = new ServiceHostProvider(mongoEnv);
-			POCOs.ServiceHost sh = provider.Queryable().Single(q => q.Machine == Environment.MachineName);
-			List<POCOs.ServiceComponent> configuredComponents = sh.Components;
+            var provider = new ServiceHostProvider(mongoEnv);
+            var sh = provider.Queryable().Single(q => q.Machine == Environment.MachineName);
+            var configuredComponents = sh.Components;
 
-			IEnumerable<Guid> configuredIds = configuredComponents.Select(c => c.Id);
-			IEnumerable<Guid> existingIds = envComponents.Components.Select(c => c.Id);
+            var configuredIds = configuredComponents.Select(c => c.Id);
+            var existingIds = envComponents.Components.Select(c => c.Id);
 
 			// newly configured components
 			foreach (var newlyConfiguredId in configuredIds.Except(existingIds))
@@ -434,8 +434,8 @@ namespace DKK.WindowsServiceHost
 			// not new, not deleted, possibly updated
 			foreach (var possiblyUpdatedId in configuredIds.Intersect(existingIds))
 			{
-				RunningServiceComponent rsc = envComponents.Components.Single(c => c.Id == possiblyUpdatedId);
-				ServiceComponent sc = configuredComponents.Single(c => c.Id == possiblyUpdatedId);
+                var rsc = envComponents.Components.Single(c => c.Id == possiblyUpdatedId);
+                var sc = configuredComponents.Single(c => c.Id == possiblyUpdatedId);
 
 				if (rsc.RowVersion != sc.RowVersion)
 					rsc.Update(envComponents.EventProducer, sc);
@@ -444,9 +444,9 @@ namespace DKK.WindowsServiceHost
 
 		private void UpdateCmdMsgQ(EnvironmentComponents envConfig, string publicationAddress)
 		{
-			IEnumerable<KeyValuePair<string, string>> mongoEnv = envConfig.Config.Where(kvp => kvp.Key.StartsWith("Mongo"));
-			ServiceHostProvider provider = new ServiceHostProvider(mongoEnv);
-			POCOs.ServiceHost sh = provider.Queryable().Single(q => q.Machine == Environment.MachineName);
+            var mongoEnv = envConfig.Config.Where(kvp => kvp.Key.StartsWith("Mongo"));
+            var provider = new ServiceHostProvider(mongoEnv);
+            var sh = provider.Queryable().Single(q => q.Machine == Environment.MachineName);
 			sh.CommandMessageQueue = publicationAddress;
 			provider.Update(sh);
 		}
@@ -469,7 +469,7 @@ namespace DKK.WindowsServiceHost
 		#region MarshalByRefObject
 		public override object InitializeLifetimeService()
 		{
-			ILease lease = (ILease)base.InitializeLifetimeService();
+            var lease = (ILease)base.InitializeLifetimeService();
 			if (lease.CurrentState == LeaseState.Initial)
 			{
 				lease.SponsorshipTimeout = TimeSpan.Zero;

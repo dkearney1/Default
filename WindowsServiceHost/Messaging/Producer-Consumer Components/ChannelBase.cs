@@ -8,14 +8,6 @@ using System.Threading.Tasks;
 
 namespace DKK.Messaging
 {
-	//public delegate void BasicAckEventHandler(object sender, BasicAckEventArgs e);
-	//public delegate void BasicNackEventHandler(object sender, BasicNackEventArgs e);
-	//public delegate void BasicRecoverOkEventHandler(object sender, EventArgs e);
-	//public delegate void BasicReturnEventHandler(object sender, BasicReturnEventArgs e);
-	//public delegate void CallbackExceptionEventHandler(object sender, CallbackExceptionEventArgs e);
-	//public delegate void FlowControlEventHandler(object sender, FlowControlEventArgs e);
-	//public delegate void ModelShutdownEventHandler(object sender, ShutdownEventArgs e);
-
 	public abstract class ChannelBase : IDisposable
 	{
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Acks")]
@@ -30,14 +22,6 @@ namespace DKK.Messaging
 
 		protected IConnection Connection { get; private set; }
 		protected IModel Channel { get; private set; }
-
-		//public event BasicAckEventHandler BasicAcks;
-		//public event BasicNackEventHandler BasicNacks;
-		//public event BasicRecoverOkEventHandler BasicRecoverOk;
-		//public event BasicReturnEventHandler BasicReturn;
-		//public event CallbackExceptionEventHandler CallbackException;
-		//public event FlowControlEventHandler FlowControl;
-		//public event ModelShutdownEventHandler ModelShutdown;
 
 		protected ChannelBase(IConnection connection)
 		{
@@ -95,49 +79,49 @@ namespace DKK.Messaging
 		#region EventHandling
 		private void BasicAckEventHandler(object sender, BasicAckEventArgs e)
 		{
-			EventHandler<BasicAckEventArgs> handler = this.BasicAcks;
+            var handler = this.BasicAcks;
 			if (handler != null)
 				handler(sender, e);
 		}
 
 		private void BasicNackEventHandler(object sender, BasicNackEventArgs e)
 		{
-			EventHandler<BasicNackEventArgs> handler = this.BasicNacks;
+            var handler = this.BasicNacks;
 			if (handler != null)
 				handler(sender, e);
 		}
 
 		private void BasicRecoverOkEventHandler(object sender, EventArgs e)
 		{
-			EventHandler<EventArgs> handler = this.BasicRecoverOk;
+            var handler = this.BasicRecoverOk;
 			if (handler != null)
 				handler(sender, e);
 		}
 
 		private void BasicReturnEventHandler(object sender, BasicReturnEventArgs e)
 		{
-			EventHandler<BasicReturnEventArgs> handler = this.BasicReturn;
+            var handler = this.BasicReturn;
 			if (handler != null)
 				handler(sender, e);
 		}
 
 		private void CallbackExceptionHandler(object sender, CallbackExceptionEventArgs e)
 		{
-			EventHandler<CallbackExceptionEventArgs> handler = this.CallbackException;
+            var handler = this.CallbackException;
 			if (handler != null)
 				handler(sender, e);
 		}
 
 		private void FlowControlEventHandler(object sender, FlowControlEventArgs e)
 		{
-			EventHandler<FlowControlEventArgs> handler = this.FlowControl;
+            var handler = this.FlowControl;
 			if (handler != null)
 				handler(sender, e);
 		}
 
 		private void ModelShutdownEventHandler(object sender, ShutdownEventArgs e)
 		{
-			EventHandler<ShutdownEventArgs> handler = this.ModelShutdown;
+            var handler = this.ModelShutdown;
 			if (handler != null)
 				handler(sender, e);
 		}

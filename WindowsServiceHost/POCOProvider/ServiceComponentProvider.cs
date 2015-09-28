@@ -39,7 +39,7 @@ namespace DKK.POCOProvider
 			if (serviceComponent.Id == Guid.Empty)
 				throw new ArgumentNullException("ServiceComponent");
 
-			int rowVersion = serviceComponent.RowVersion;
+            var rowVersion = serviceComponent.RowVersion;
 
 			var query = Query.And(
 									Query<ServiceComponent>.EQ(e => e.Id, serviceComponent.Id),
@@ -61,7 +61,7 @@ namespace DKK.POCOProvider
 			if (serviceComponent.Id == Guid.Empty)
 				throw new ArgumentNullException("ServiceComponent");
 
-			int rowVersion = serviceComponent.RowVersion;
+            var rowVersion = serviceComponent.RowVersion;
 
 			var query = Query.And(
 									Query<ServiceComponent>.EQ(e => e.Id, serviceComponent.Id),

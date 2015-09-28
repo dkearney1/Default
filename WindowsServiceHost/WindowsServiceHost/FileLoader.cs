@@ -27,15 +27,15 @@ namespace DKK.WindowsServiceHost
 			if (!Directory.Exists(this.FileUpdateLocation))
 				throw new ArgumentException("Directory does not exist", "FileUpdateLocation");
 
-			string prefix = this.FileUpdateLocation + @"\";
-			foreach (string entry in Directory.EnumerateFileSystemEntries(this.FileUpdateLocation, "*.*", SearchOption.AllDirectories))
+            var prefix = this.FileUpdateLocation + @"\";
+			foreach (var entry in Directory.EnumerateFileSystemEntries(this.FileUpdateLocation, "*.*", SearchOption.AllDirectories))
 			{
-				bool isDir = Directory.Exists(entry);
-				string currentEntry = Path.Combine(this.FileDestination, entry.Replace(prefix, string.Empty));
+                var isDir = Directory.Exists(entry);
+                var currentEntry = Path.Combine(this.FileDestination, entry.Replace(prefix, string.Empty));
 
 				if (isDir)
 				{
-					bool matchesIgnore = this.IgnoredFileSpecs.Any(ifs => ifs.IsMatch(currentEntry));
+                    var matchesIgnore = this.IgnoredFileSpecs.Any(ifs => ifs.IsMatch(currentEntry));
 
 					if (!matchesIgnore)
 					{
@@ -53,12 +53,12 @@ namespace DKK.WindowsServiceHost
 				}
 				else
 				{
-					bool matchesIgnore = this.IgnoredFileSpecs.Any(ifs => ifs.IsMatch(currentEntry));
+                    var matchesIgnore = this.IgnoredFileSpecs.Any(ifs => ifs.IsMatch(currentEntry));
 
 					if (!matchesIgnore)
 					{
-						FileInfo srcFI = new FileInfo(entry);
-						FileInfo dstFI = new FileInfo(currentEntry);
+                        var srcFI = new FileInfo(entry);
+                        var dstFI = new FileInfo(currentEntry);
 
 						if (dstFI.Exists)
 						{

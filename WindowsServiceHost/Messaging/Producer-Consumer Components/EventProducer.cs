@@ -68,12 +68,12 @@ namespace DKK.Messaging
 			if (!this.Channel.IsOpen)
 				throw new InvalidOperationException("Channel is not open");
 
-			byte[] bytes = EventSerializer.Serialize(evnt);
+            var bytes = EventSerializer.Serialize(evnt);
 			properties.ContentEncoding = EventSerializer.ContentEncoding;
 			properties.ContentType = EventSerializer.ContentType;
 			properties.Type = evnt.GetType().FullName;
 
-			ExchangeSettings eventsExchange = Constants.EventExchangeSettings;
+            var eventsExchange = Constants.EventExchangeSettings;
 			this.Channel.ExchangeDeclare(eventsExchange.Name, eventsExchange.ExchangeType, eventsExchange.Durable, eventsExchange.AutoDelete, eventsExchange.Arguments);
 			this.Channel.BasicPublish(eventsExchange.Name, routingKey, properties, bytes);
 		}

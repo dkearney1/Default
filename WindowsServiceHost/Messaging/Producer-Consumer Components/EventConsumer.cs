@@ -53,7 +53,7 @@ namespace DKK.Messaging
 		public void RegisterEventHandler<T>(string routingKey, Action<IBasicProperties, IEvent> action)
 			where T : IEvent
 		{
-			Type t = typeof(T);
+            var t = typeof(T);
 
 			if (this.RegisteredHandlers.ContainsKey(t))
 				throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Event Handler already registered for Type {0}", typeof(T).Name));
@@ -73,7 +73,7 @@ namespace DKK.Messaging
 		public bool UnregisterEventHandler<T>()
 			where T : IEvent
 		{
-			Type t = typeof(T);
+            var t = typeof(T);
 			SubscriptionInfo si = null;
 
 			if (this.RegisteredHandlers.TryRemove(t, out si))
@@ -126,11 +126,11 @@ namespace DKK.Messaging
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 		private void Consume(CancellationToken ct)
 		{
-			bool autoAck = false;
+            var autoAck = false;
 
 			using (Subscription subscription = new Subscription(this.Channel, this.PrivateQueue.Name, autoAck))
 			{
-				int subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
+                var subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
 
 				while (!ct.IsCancellationRequested)
 				{
@@ -146,9 +146,9 @@ namespace DKK.Messaging
 
 					if (eventArgs != null && !ct.IsCancellationRequested)
 					{
-						IEvent evnt = EventDeserializer.Deserialize(eventArgs.Body) as IEvent;
+                        var evnt = EventDeserializer.Deserialize(eventArgs.Body) as IEvent;
 
-						Type t = evnt.GetType();
+                        var t = evnt.GetType();
 
 						try
 						{

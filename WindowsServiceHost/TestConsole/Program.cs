@@ -75,7 +75,7 @@ namespace DKK.TestConsole
 
 		static void Main(string[] args)
 		{
-			List<KeyValuePair<string, string>> mongoEnv = new List<KeyValuePair<string, string>>();
+            var mongoEnv = new List<KeyValuePair<string, string>>();
 
 			mongoEnv.Add(new KeyValuePair<string, string>("MongoServer", "localhost"));
 			mongoEnv.Add(new KeyValuePair<string, string>("MongoPort", "27017"));
@@ -116,10 +116,10 @@ namespace DKK.TestConsole
 
 			//scp.Update(sc);
 
-			SampleComponent theComponent = new SampleComponent();
-			SampleComponentParams theParams = new SampleComponentParams() { IdleMessageRate = 1, WorkQueue = "SampleWorkQueue" };
+			var theComponent = new SampleComponent();
+            var theParams = new SampleComponentParams() { IdleMessageRate = 1, WorkQueue = "SampleWorkQueue" };
 
-			ServiceComponent sc1 = new ServiceComponent()
+            var sc1 = new ServiceComponent()
 			{
 				Id = Guid.NewGuid(),
 				Assembly = theComponent.GetType().Assembly.FullName,
@@ -132,26 +132,26 @@ namespace DKK.TestConsole
 				ParamsClass = theParams.GetType().FullName,
 			};
 
-			//ServiceComponent sc2 = new ServiceComponent()
-			//{
-			//	Id = Guid.NewGuid(),
-			//	Assembly = theComponent.GetType().Assembly.FullName,
-			//	Class = theComponent.GetType().FullName,
-			//	Config = JsonConvert.SerializeObject(theParams, Formatting.None, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }),
-			//	FriendlyName = "Sample Component II",
-			//	IsActive = true,
-			//	IsPaused = false,
-			//	ParamsAssembly = theParams.GetType().Assembly.FullName,
-			//	ParamsClass = theParams.GetType().FullName,
-			//};
+            //ServiceComponent sc2 = new ServiceComponent()
+            //{
+            //	Id = Guid.NewGuid(),
+            //	Assembly = theComponent.GetType().Assembly.FullName,
+            //	Class = theComponent.GetType().FullName,
+            //	Config = JsonConvert.SerializeObject(theParams, Formatting.None, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }),
+            //	FriendlyName = "Sample Component II",
+            //	IsActive = true,
+            //	IsPaused = false,
+            //	ParamsAssembly = theParams.GetType().Assembly.FullName,
+            //	ParamsClass = theParams.GetType().FullName,
+            //};
 
-			ServiceHost sh = new ServiceHost()
+            var sh = new ServiceHost()
 			{
 				Machine = Environment.MachineName,
 			};
 			sh.Components.AddRange(new ServiceComponent[] { sc1, /*sc2*/ });
 
-			ServiceHostProvider shp = new ServiceHostProvider(mongoEnv);
+            var shp = new ServiceHostProvider(mongoEnv);
 			shp.Insert(sh);
 		}
 	}

@@ -21,15 +21,15 @@ namespace DKK.DataModel
 
 		public static Guid NewSequentialGuid(DateTime created, Guid sourceGuid, SequentialGuidType resultingGuidType)
 		{
-			byte[] randomBytes = sourceGuid.ToByteArray();
+            var randomBytes = sourceGuid.ToByteArray();
 
-			long timestamp = created.Ticks / 10000L;
-			byte[] timestampBytes = BitConverter.GetBytes(timestamp);
+            var timestamp = created.Ticks / 10000L;
+            var timestampBytes = BitConverter.GetBytes(timestamp);
 
 			if (BitConverter.IsLittleEndian)
 				Array.Reverse(timestampBytes);
 
-			byte[] guidBytes = new byte[16];
+            var guidBytes = new byte[16];
 
 			switch (resultingGuidType)
 			{

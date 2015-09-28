@@ -63,7 +63,7 @@ namespace DKK.SampleServiceComponent
 				{
 					try
 					{
-						SampleComponentParams param = JsonConvert.DeserializeObject<SampleComponentParams>(this.Configuration, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+                        var param = JsonConvert.DeserializeObject<SampleComponentParams>(this.Configuration, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
 						this.IdleMessageRate = TimeSpan.FromSeconds(param.IdleMessageRate);
 						this.WorkQueue = param.WorkQueue;
 					}
@@ -131,13 +131,13 @@ namespace DKK.SampleServiceComponent
 
 		private void PublishEvent(string status, string substatus = null)
 		{
-			IEvent evnt = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, SubStatus = substatus };
+            var evnt = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, SubStatus = substatus };
 			this.PublishEvent(evnt);
 		}
 
 		private void PublishEventFailed(string status, Exception ex)
 		{
-			IEvent evnt = new ServiceComponentStateChangeFailed() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, Exception = ex };
+            var evnt = new ServiceComponentStateChangeFailed() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, Exception = ex };
 			this.PublishEvent(evnt);
 		}
 
@@ -162,10 +162,10 @@ namespace DKK.SampleServiceComponent
 		private void InternalTask()
 		{
 			this.PublishEvent("Started");
-			TimeSpan sleepSpan = TimeSpan.FromMilliseconds(100d);
-			string routingKey = this.WorkQueue;
+            var sleepSpan = TimeSpan.FromMilliseconds(100d);
+            var routingKey = this.WorkQueue;
 
-			Task heartbeat = Task.Run(() =>
+            var heartbeat = Task.Run(() =>
 			{
 				CancellationToken hbct = this.CancellationTokenSource.Token;
 
@@ -177,9 +177,9 @@ namespace DKK.SampleServiceComponent
 				}
 			});
 
-			CancellationToken ct = this.CancellationTokenSource.Token;
+            var ct = this.CancellationTokenSource.Token;
 
-			using (IWorkConsumer wc = new WorkConsumer(this.MessageBrokerConnection.Connection))
+			using (var wc = new WorkConsumer(this.MessageBrokerConnection.Connection))
 			{
 				wc.RegisterWorkHandler(routingKey, this.WorkItemHandler);
 
@@ -214,18 +214,18 @@ namespace DKK.SampleServiceComponent
 
 		private void WorkItemHandler(IBasicProperties props, IWork iWork)
 		{
-			SampleWorkItem work = iWork as SampleWorkItem;
+            var work = iWork as SampleWorkItem;
 			if (work == null)
 				throw new Exception(string.Format("Don't know how to work on '{0}' items", iWork.GetType().FullName));
 
 			this.InternalState = InternalStateEnum.Busy;
 
-			ServiceComponentStatus currentStatus = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.GetType().Name, Status = "Working", SubStatus = "Starting" };
+            var currentStatus = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.GetType().Name, Status = "Working", SubStatus = "Starting" };
 			this.PublishEvent(currentStatus);
 
-			string workItemType = work.ItemType;
-			Guid workItemId = work.ItemId;
-			TimeSpan workDelay = work.WorkDelay;
+            var workItemType = work.ItemType;
+            var workItemId = work.ItemId;
+            var workDelay = work.WorkDelay;
 
 			currentStatus.SubStatus = "Executing";
 			this.PublishEvent(currentStatus);
@@ -242,7 +242,7 @@ namespace DKK.SampleServiceComponent
 		#region MarshalByRefObject
 		public override object InitializeLifetimeService()
 		{
-			ILease lease = (ILease)base.InitializeLifetimeService();
+            var lease = (ILease)base.InitializeLifetimeService();
 			if (lease.CurrentState == LeaseState.Initial)
 			{
 				lease.SponsorshipTimeout = TimeSpan.Zero;

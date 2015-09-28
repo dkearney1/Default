@@ -11,7 +11,7 @@ namespace DKK.Events
 	{
 		public static object Deserialize(byte[] msg)
 		{
-			string s = Encoding.UTF8.GetString(msg);
+			var s = Encoding.UTF8.GetString(msg);
 			return JsonConvert.DeserializeObject(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
 		}
 	}
@@ -21,7 +21,7 @@ namespace DKK.Events
 	{
 		public static T Deserialize(byte[] msg)
 		{
-			string s = Encoding.UTF8.GetString(msg);
+			var s = Encoding.UTF8.GetString(msg);
 			return JsonConvert.DeserializeObject<T>(s, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
 		}
 	}

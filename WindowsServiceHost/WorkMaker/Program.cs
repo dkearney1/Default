@@ -18,7 +18,7 @@ namespace WorkMaker
 	{
 		static ServiceHost GetServiceHost(ServiceHostProvider provider)
 		{
-			ServiceHost sh = provider.Queryable().Single(q => q.Machine == Environment.MachineName);
+            var sh = provider.Queryable().Single(q => q.Machine == Environment.MachineName);
 
 			while (string.IsNullOrWhiteSpace(sh.CommandMessageQueue))
 			{
@@ -31,26 +31,26 @@ namespace WorkMaker
 
 		static void Main(string[] args)
 		{
-			TimeSpan timeout = TimeSpan.FromSeconds(1d);
+            var timeout = TimeSpan.FromSeconds(1d);
 
-			SvcComponentConfig.ISvcComponentConfig configClient = new SvcComponentConfig.SvcComponentConfigClient();
+            var configClient = new SvcComponentConfig.SvcComponentConfigClient();
 
-			// Get the list of environments, and make sure Dev is in the list
-			IEnumerable<string> environments = configClient.GetEnvironments();
-			string env = environments.Single(s => s == "Dev");
+            // Get the list of environments, and make sure Dev is in the list
+            var environments = configClient.GetEnvironments();
+            var env = environments.Single(s => s == "Dev");
 
 			// Get the Dev environment configuration
-			IEnumerable<KeyValuePair<string, string>> environment = configClient.GetEnvironmentConfig(env);
-			IEnumerable<KeyValuePair<string, string>> mongoEnv = environment.Where(kvp => kvp.Key.StartsWith("Mongo"));
-			IEnumerable<KeyValuePair<string, string>> rabbitEnv = environment.Where(kvp => kvp.Key.StartsWith("Rabbit"));
+			var environment = configClient.GetEnvironmentConfig(env);
+			var mongoEnv = environment.Where(kvp => kvp.Key.StartsWith("Mongo"));
+            var rabbitEnv = environment.Where(kvp => kvp.Key.StartsWith("Rabbit"));
 
-			ServiceHostProvider provider = new ServiceHostProvider(mongoEnv);
+            var provider = new ServiceHostProvider(mongoEnv);
 
-			using (MessageBrokerConnection mbc = new MessageBrokerConnection(rabbitEnv))
-			using (ICommandProducer cs = new CommandProducer(mbc.Connection))
-			using (IWorkProducer wp = new WorkProducer(mbc.Connection))
+			using (var mbc = new MessageBrokerConnection(rabbitEnv))
+			using (var cs = new CommandProducer(mbc.Connection))
+			using (var wp = new WorkProducer(mbc.Connection))
 			{
-				bool exit = false;
+                var exit = false;
 				Console.WriteLine("Press F to reload Files");
 				Console.WriteLine("Press C to reload Configuration");
 				Console.WriteLine("Press T to sTart component");
@@ -64,7 +64,7 @@ namespace WorkMaker
 
 				do
 				{
-					ConsoleKeyInfo cki = Console.ReadKey(true);
+                    var cki = Console.ReadKey(true);
 					string keyChar = new string(cki.KeyChar, 1);
 
 					if (string.Compare("x", keyChar, true, CultureInfo.InvariantCulture) == 0)
@@ -75,8 +75,8 @@ namespace WorkMaker
 
 					else
 					{
-						ServiceHost sh = GetServiceHost(provider);
-						PublicationAddress pa = PublicationAddress.Parse(sh.CommandMessageQueue);
+                        var sh = GetServiceHost(provider);
+                        var pa = PublicationAddress.Parse(sh.CommandMessageQueue);
 
 						if (string.Compare("f", keyChar, true, CultureInfo.InvariantCulture) == 0)
 							cs.Publish(new ReloadFiles() { CorrelationId = Guid.NewGuid() }, pa, timeout);

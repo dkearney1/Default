@@ -24,11 +24,11 @@ namespace DKK.WindowsServiceHost
 				{
 					serviceHost.DebugStart();
 
-					bool exit = false;
+                    var exit = false;
 					Console.WriteLine("Press x to exit");
 					do
 					{
-						ConsoleKeyInfo cki = Console.ReadKey(true);
+                        var cki = Console.ReadKey(true);
 						if (string.Compare("x", new string(cki.KeyChar, 1), true, CultureInfo.InvariantCulture) == 0)
 							exit = true;
 					}
@@ -43,7 +43,7 @@ namespace DKK.WindowsServiceHost
 
 				try
 				{
-					ServiceBase[] ServicesToRun = new ServiceBase[] { new ServiceHost() };
+                    var ServicesToRun = new ServiceBase[] { new ServiceHost() };
 					ServiceBase.Run(ServicesToRun);
 				}
 				catch (Exception ex)

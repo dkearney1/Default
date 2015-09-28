@@ -46,7 +46,7 @@ namespace DKK.Messaging
 			if (this.RegisteredHandlers.ContainsKey(workQueueName))
 				throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Work Handler already registered for {0}", workQueueName));
 
-			QueueSettings workQueue = Constants.WorkQueueSettings;
+			var workQueue = Constants.WorkQueueSettings;
 			workQueue.Name = workQueueName;
 
 			// The queue has to be declared and bound first
@@ -104,14 +104,14 @@ namespace DKK.Messaging
 				this.disposed = true;
 			}
 		}
-		#endregion
+        #endregion
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-		private void Consume(CancellationToken ct)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        private void Consume(CancellationToken ct)
 		{
-			bool autoAck = false;
+            var autoAck = false;
 
-			TimeSpan subscriptionTimeout = TimeSpan.FromMilliseconds(100d);
+            var subscriptionTimeout = TimeSpan.FromMilliseconds(100d);
 
 			while (!ct.IsCancellationRequested)
 			{
@@ -122,15 +122,15 @@ namespace DKK.Messaging
 						action();
 				}
 
-				bool workDone = false;
+                var workDone = false;
 
-				foreach (SubscriptionInfo si in this.RegisteredHandlers.Values)
+				foreach (var si in this.RegisteredHandlers.Values)
 				{
-					BasicGetResult result = this.Channel.BasicGet(si.WorkQueue.Name, autoAck);
+                    var result = this.Channel.BasicGet(si.WorkQueue.Name, autoAck);
 
 					if (result != null && !ct.IsCancellationRequested)
 					{
-						IWork work = WorkDeserializer.Deserialize(result.Body) as IWork;
+                        var work = WorkDeserializer.Deserialize(result.Body) as IWork;
 
 						try
 						{
@@ -142,11 +142,13 @@ namespace DKK.Messaging
 							// become the priority
 							break;
 						}
-						catch
+						catch (Exception /*ex*/)
 						{
-							// eat any and all exceptions
-							// consider accepting an exception handler Action<>()
-							// and calling it
+                            // eat any and all exceptions
+                            // consider accepting an exception handler Action<>()
+                            // and calling it
+
+                            //this.Channel.BasicNack(result.DeliveryTag, false, true);
 						}
 						finally
 						{

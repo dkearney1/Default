@@ -15,8 +15,8 @@ namespace DKK.WindowsServiceComponentConfig
 
 		public IEnumerable<string> GetEnvironments()
 		{
-			string key = string.Format("{0}Environments", prefix);
-			List<string> response = new List<string>();
+            var key = string.Format("{0}Environments", prefix);
+            var response = new List<string>();
 
 			var appSettings = ConfigurationManager.AppSettings;
 			if (!string.IsNullOrWhiteSpace(appSettings[key]))
@@ -27,8 +27,8 @@ namespace DKK.WindowsServiceComponentConfig
 
 		public IEnumerable<KeyValuePair<string, string>> GetEnvironmentConfig(string environment)
 		{
-			string key = string.Format("{0}Environment{1}", prefix, environment);
-			List<KeyValuePair<string, string>> response = new List<KeyValuePair<string, string>>();
+            var key = string.Format("{0}Environment{1}", prefix, environment);
+            var response = new List<KeyValuePair<string, string>>();
 
 			var appSettings = ConfigurationManager.AppSettings;
 			if (!string.IsNullOrWhiteSpace(appSettings[key]))

@@ -135,7 +135,7 @@ namespace DKK.WindowsServiceHost
 			{
 				if (this.WorkerDomain == null)
 				{
-					AppDomainSetup adSetup = new AppDomainSetup();
+                    var adSetup = new AppDomainSetup();
 					adSetup.ApplicationName = this.ServiceComponentData.FriendlyName;
 					this.WorkerDomain = AppDomain.CreateDomain(this.ServiceComponentData.FriendlyName, null, adSetup);
 				}

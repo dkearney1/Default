@@ -48,7 +48,7 @@ namespace DKK.Messaging
 		public void RegisterCommandHandler<T>(Func<IBasicProperties, ICommand, ICommand> action)
 			where T : ICommand
 		{
-			Type t = typeof(T);
+            var t = typeof(T);
 
 			if (this.RegisteredHandlers.ContainsKey(t))
 				throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Command Handler already registered for {0}", typeof(T).Name));
@@ -62,7 +62,7 @@ namespace DKK.Messaging
 		public bool UnregisterCommandHandler<T>()
 			where T : ICommand
 		{
-			Type t = typeof(T);
+            var t = typeof(T);
 			Func<IBasicProperties, ICommand, ICommand> action;
 
 			return this.RegisteredHandlers.TryRemove(t, out action);
@@ -104,11 +104,11 @@ namespace DKK.Messaging
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 		private void Consume(CancellationToken ct)
 		{
-			bool autoAck = false;
+            var autoAck = false;
 
-			using (Subscription subscription = new Subscription(this.Channel, this.PrivateQueue.Name, autoAck))
+			using (var subscription = new Subscription(this.Channel, this.PrivateQueue.Name, autoAck))
 			{
-				int subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
+                var subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
 
 				while (!ct.IsCancellationRequested)
 				{
@@ -117,9 +117,9 @@ namespace DKK.Messaging
 
 					if (eventArgs != null && !ct.IsCancellationRequested)
 					{
-						ICommand cmd = CommandDeserializer.Deserialize(eventArgs.Body) as ICommand;
+                        var cmd = CommandDeserializer.Deserialize(eventArgs.Body) as ICommand;
 
-						Type t = cmd.GetType();
+                        var t = cmd.GetType();
 						Func<IBasicProperties, ICommand, ICommand> action;
 						ICommand reply = null;
 
@@ -151,24 +151,24 @@ namespace DKK.Messaging
 		{
 			if (reply.CorrelationId.HasValue)
 			{
-				IBasicProperties props = this.Channel.CreateBasicProperties();
+                var props = this.Channel.CreateBasicProperties();
 
 				//props.AppId;
 				//props.ClusterId;
 				props.CorrelationId = reply.CorrelationId.ToString();
 				props.DeliveryMode = Constants.Persistent;
-				//props.Expiration;
-				//props.Headers;
-				//props.MessageId;
-				//props.Priority;
-				//props.ProtocolClassId;
-				//props.ProtocolClassName;
-				//props.ReplyTo;
-				//props.ReplyToAddress = new PublicationAddress(cmdExchange.Type, cmdExchange.Name, privateQueue.Name);
-				//props.Timestamp;
-				//props.UserId;
+                //props.Expiration;
+                //props.Headers;
+                //props.MessageId;
+                //props.Priority;
+                //props.ProtocolClassId;
+                //props.ProtocolClassName;
+                //props.ReplyTo;
+                //props.ReplyToAddress = new PublicationAddress(cmdExchange.Type, cmdExchange.Name, privateQueue.Name);
+                //props.Timestamp;
+                //props.UserId;
 
-				byte[] bytes = CommandSerializer.Serialize(reply);
+                var bytes = CommandSerializer.Serialize(reply);
 				props.ContentEncoding = CommandSerializer.ContentEncoding;
 				props.ContentType = CommandSerializer.ContentType;
 				props.Type = reply.GetType().FullName;
