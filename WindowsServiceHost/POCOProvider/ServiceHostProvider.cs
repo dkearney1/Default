@@ -1,79 +1,60 @@
-﻿using DKK.POCOs;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DKK.POCOs;
+using MongoDB.Driver;
 
 namespace DKK.POCOProvider
 {
 	public sealed class ServiceHostProvider : PocoProviderBase<ServiceHost>
 	{
 		public ServiceHostProvider(IEnumerable<KeyValuePair<string, string>> mongoEnv)
-			:base(mongoEnv)
+			: base(mongoEnv)
 		{
 			this.repositoryName = this.MongoEnv.Single(kvp => kvp.Key == "MongoRepositorySvcConfig").Value;
 			this.collectionName = "Services";
 		}
 
-		public IQueryable<ServiceHost> Queryable()
+		public IQueryable<ServiceHost> Queryable() => base.AsQueryable();
+
+		public new void Insert(ServiceHost serviceHost)
 		{
-			return base.AsQueryable();
+			this.BasicGuards(serviceHost, nameof(serviceHost));
+			base.Insert(serviceHost);
 		}
 
-		public new void Insert(ServiceHost ServiceHost)
+		public void Update(ServiceHost serviceHost)
 		{
-			var r = base.Insert(ServiceHost);
+			this.BasicGuards(serviceHost, nameof(serviceHost));
 
-			if (!r.Ok)
-				throw new ArgumentOutOfRangeException("ServiceHost", string.Format("ServiceHost {0}, {1}", ServiceHost.Id, r.ErrorMessage));
+			var filter = this.BuildFilter(serviceHost);
+			var update = this.BuildUpdate(serviceHost);
+
+			base.FindOneAndModify(filter, update);
+
+			serviceHost.RowVersion++;
 		}
 
-		public void Update(ServiceHost ServiceHost)
+		public void Delete(ServiceHost serviceHost)
 		{
-			if (ServiceHost.Id == Guid.Empty)
-				throw new ArgumentNullException("ServiceHost");
+			this.BasicGuards(serviceHost, nameof(serviceHost));
 
-            var rowVersion = ServiceHost.RowVersion;
+			var filter = this.BuildFilter(serviceHost);
 
-			var query = Query.And(
-									Query<ServiceHost>.EQ(e => e.Id, ServiceHost.Id),
-									Query<ServiceHost>.EQ(e => e.RowVersion, rowVersion)
-								);
-
-			var update = this.BuildUpdate(ServiceHost);
-
-			var r = base.FindAndModify(query, update);
-
-			if (!r.Ok)
-				throw new ArgumentOutOfRangeException("ServiceHost", string.Format("ServiceHost {0}, {1}", ServiceHost.Id, r.ErrorMessage));
-
-			ServiceHost.RowVersion++;
+			base.DeleteOne(filter);
 		}
 
-		public void Delete(ServiceHost ServiceHost)
+		private FilterDefinition<ServiceHost> BuildFilter(ServiceHost serviceHost)
 		{
-			if (ServiceHost.Id == Guid.Empty)
-				throw new ArgumentNullException("ServiceHost");
-
-            var rowVersion = ServiceHost.RowVersion;
-
-			var query = Query.And(
-									Query<ServiceHost>.EQ(e => e.Id, ServiceHost.Id),
-									Query<ServiceHost>.EQ(e => e.RowVersion, rowVersion)
-								);
-
-			var r = base.Delete(query);
-
-			if (!r.Ok)
-				throw new ArgumentOutOfRangeException("ServiceHost", string.Format("ServiceHost {0}, {1}", ServiceHost.Id, r.ErrorMessage));
+			var filterBuilder = Builders<ServiceHost>.Filter;
+			return filterBuilder.Eq(sc => sc.Id, serviceHost.Id) &
+				filterBuilder.Eq(sc => sc.RowVersion, serviceHost.RowVersion);
 		}
 
-		private UpdateBuilder<ServiceHost> BuildUpdate(ServiceHost current)
+		private UpdateDefinition<ServiceHost> BuildUpdate(ServiceHost current)
 		{
-			var update = Update<ServiceHost>
+			var updateBuilder = Builders<ServiceHost>.Update;
+			return updateBuilder
 							.Set(e => e.Machine, current.Machine)
 							.Set(e => e.CommandMessageQueue, current.CommandMessageQueue)
 							.Set(e => e.Components, current.Components)
@@ -82,8 +63,6 @@ namespace DKK.POCOProvider
 							.Set(e => e.LastUpdater, current.LastUpdater)
 							.Set(e => e.LastUpdate, current.LastUpdate)
 							.Inc(e => e.RowVersion, 1);
-
-			return update;
 		}
 	}
 }

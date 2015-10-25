@@ -1,24 +1,14 @@
-﻿using DKK.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using DKK.Events;
 
 namespace DKK.FileWatcherEvents
 {
 	[Serializable]
 	public sealed class FileDeleted : EventBase
 	{
-		protected override string routingKeyFormat
-		{
-			get { return @"FileWatcher.FileDeleted.{0}.{1}"; }
-		}
+		protected override string routingKeyFormat => @"FileWatcher.FileDeleted.{0}.{1}";
 
-		protected override string routingKeyExplanation
-		{
-			get { return @"FileWatcher.FileDeleted.Directory.Filename"; }
-		}
+		protected override string routingKeyExplanation => @"FileWatcher.FileDeleted.Directory.Filename";
 
 		public string Directory { get; set; }
 		public string Filename { get; set; }

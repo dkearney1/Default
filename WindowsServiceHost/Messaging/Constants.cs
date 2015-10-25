@@ -1,11 +1,7 @@
-﻿using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RabbitMQ.Client;
 
 namespace DKK.Messaging
 {
@@ -23,102 +19,60 @@ namespace DKK.Messaging
 		public const string EventExchangeName = "EventExchange";
 		public const string WorkExchangeName = "WorkExchange";
 		public const string CmdExchangeName = "CmdExchange";
-		public static string PrivateQueueName
-		{
-			get
-			{
-				return string.Format(CultureInfo.InvariantCulture, "{0}_{1}_{2}", Environment.MachineName, Path.GetFileNameWithoutExtension(Environment.CommandLine.Replace("\"", string.Empty)), Guid.NewGuid().ToString("N").Substring(0, 8));
-			}
-		}
+		public static string PrivateQueueName => string.Format(CultureInfo.InvariantCulture, "{0}_{1}_{2}", Environment.MachineName, Path.GetFileNameWithoutExtension(Environment.CommandLine.Replace("\"", string.Empty)), Guid.NewGuid().ToString("N").Substring(0, 8));
 
-		public static ExchangeSettings DefaultExchangeSettings
+		public static ExchangeSettings DefaultExchangeSettings => new ExchangeSettings()
 		{
-			get
-			{
-				return new ExchangeSettings()
-				{
-					Name = Constants.DefaultExchangeName,
-					ExchangeType = ExchangeType.Direct,
-					Durable = true,
-					AutoDelete = false,
-					Arguments = null
-				};
-			}
-		}
+			Name = Constants.DefaultExchangeName,
+			ExchangeType = ExchangeType.Direct,
+			Durable = true,
+			AutoDelete = false,
+			Arguments = null
+		};
 
-		public static ExchangeSettings EventExchangeSettings
+		public static ExchangeSettings EventExchangeSettings => new ExchangeSettings()
 		{
-			get
-			{
-				return new ExchangeSettings()
-				{
-					Name = Constants.EventExchangeName,
-					ExchangeType = ExchangeType.Topic,
-					Durable = true,
-					AutoDelete = false,
-					Arguments = null
-				};
-			}
-		}
+			Name = Constants.EventExchangeName,
+			ExchangeType = ExchangeType.Topic,
+			Durable = true,
+			AutoDelete = false,
+			Arguments = null
+		};
 
-		public static ExchangeSettings CmdExchangeSettings
+		public static ExchangeSettings CmdExchangeSettings => new ExchangeSettings()
 		{
-			get
-			{
-				return new ExchangeSettings()
-				{
-					Name = Constants.CmdExchangeName,
-					ExchangeType = ExchangeType.Direct,
-					Durable = true,
-					AutoDelete = false,
-					Arguments = null
-				};
-			}
-		}
+			Name = Constants.CmdExchangeName,
+			ExchangeType = ExchangeType.Direct,
+			Durable = true,
+			AutoDelete = false,
+			Arguments = null
+		};
 
-		public static ExchangeSettings WorkExchangeSettings
+		public static ExchangeSettings WorkExchangeSettings => new ExchangeSettings()
 		{
-			get
-			{
-				return new ExchangeSettings()
-				{
-					Name = Constants.WorkExchangeName,
-					ExchangeType = ExchangeType.Direct,
-					Durable = true,
-					AutoDelete = false,
-					Arguments = null
-				};
-			}
-		}
+			Name = Constants.WorkExchangeName,
+			ExchangeType = ExchangeType.Direct,
+			Durable = true,
+			AutoDelete = false,
+			Arguments = null
+		};
 
-		public static QueueSettings PrivateQueueSettings
+		public static QueueSettings PrivateQueueSettings => new QueueSettings()
 		{
-			get
-			{
-				return new QueueSettings()
-				{
-					Name = Constants.PrivateQueueName,
-					Durable = false,
-					AutoDelete = false,
-					Exclusive = true,
-					Arguments = null
-				};
-			}
-		}
+			Name = Constants.PrivateQueueName,
+			Durable = false,
+			AutoDelete = false,
+			Exclusive = true,
+			Arguments = null
+		};
 
-		public static QueueSettings WorkQueueSettings
+		public static QueueSettings WorkQueueSettings => new QueueSettings()
 		{
-			get
-			{
-				return new QueueSettings()
-				{
-					Name = string.Empty,
-					Durable = true,
-					AutoDelete = false,
-					Exclusive = false,
-					Arguments = null
-				};
-			}
-		}
+			Name = string.Empty,
+			Durable = true,
+			AutoDelete = false,
+			Exclusive = false,
+			Arguments = null
+		};
 	}
 }

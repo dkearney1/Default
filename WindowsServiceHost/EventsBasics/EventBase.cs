@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DKK.Events
 {
@@ -24,9 +20,6 @@ namespace DKK.Events
 		public string UserName { get; set; }
 		public abstract string RoutingKey { get; }
 
-		public string RoutingKeyExplanation
-		{
-			get { return this.routingKeyExplanation; }
-		}
+		public string RoutingKeyExplanation => this.routingKeyExplanation;
 	}
 }

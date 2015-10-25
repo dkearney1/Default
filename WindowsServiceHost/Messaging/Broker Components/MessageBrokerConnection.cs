@@ -1,19 +1,16 @@
-﻿using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RabbitMQ.Client;
 
 namespace DKK.Messaging
 {
 	public sealed class MessageBrokerConnection : IDisposable
 	{
-		public string Server { get; private set; }
-		public int Port { get; private set; }
-		public string VHost { get; private set; }
+		public string Server { get; }
+		public int Port { get; }
+		public string VHost { get; }
 		public IConnection Connection { get; private set; }
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
@@ -24,22 +21,22 @@ namespace DKK.Messaging
 			this.VHost = rabbitEnvironment.Single(kvp => kvp.Key == "RabbitMQVHost").Value;
 
 			this.Connection = this.CreateConnection();
-			this.Connection.ConnectionShutdown += new ConnectionShutdownEventHandler(connectionShutdownEvent);
+			this.Connection.ConnectionShutdown += Connection_ConnectionShutdown;
+		}
+
+		private void Connection_ConnectionShutdown(object sender, ShutdownEventArgs e)
+		{
+			(sender as IConnection).ConnectionShutdown -= Connection_ConnectionShutdown;
+			this.Connection = null;
 		}
 
 		private IConnection CreateConnection()
 		{
-            var factory = new ConnectionFactory();
+			var factory = new ConnectionFactory();
 			factory.HostName = this.Server;
 			factory.Port = this.Port;
 			factory.VirtualHost = this.VHost;
 			return factory.CreateConnection();
-		}
-
-		private void connectionShutdownEvent(object sender, ShutdownEventArgs e)
-		{
-			(sender as IConnection).ConnectionShutdown -= new ConnectionShutdownEventHandler(connectionShutdownEvent);
-			this.Connection = null;
 		}
 
 		public void CloseConnection()

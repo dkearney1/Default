@@ -1,26 +1,15 @@
-﻿using DKK.Events;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using DKK.Events;
 
 namespace DKK.ServiceHostEvents
 {
 	[Serializable]
 	public sealed class ServiceComponentStatus : EventBase
 	{
-		protected override string routingKeyFormat
-		{
-			get { return @"ServiceComponent.StateChange.{0}.{1}.{2}"; }
-		}
+		protected override string routingKeyFormat => @"ServiceComponent.StateChange.{0}.{1}.{2}";
 
-		protected override string routingKeyExplanation
-		{
-			get { return @"ServiceComponent.StateChange.Machine.ServiceComponent.Status"; }
-		}
+		protected override string routingKeyExplanation => @"ServiceComponent.StateChange.Machine.ServiceComponent.Status";
 
 		public string ServiceComponent { get; set; }
 		private string _status;
@@ -30,7 +19,7 @@ namespace DKK.ServiceHostEvents
 			set { this._status = value; this.StatusTime = DateTimeOffset.Now; }
 		}
 		public DateTimeOffset StatusTime { get; set; }
-		public TimeSpan TimeInStatus { get { return DateTimeOffset.Now - this.StatusTime; } }
+		public TimeSpan TimeInStatus => DateTimeOffset.Now - this.StatusTime;
 		private string _subStatus;
 		public string SubStatus
 		{
@@ -38,7 +27,7 @@ namespace DKK.ServiceHostEvents
 			set { this._subStatus = value; this.SubStatusTime = DateTimeOffset.Now; }
 		}
 		public DateTimeOffset SubStatusTime { get; set; }
-		public TimeSpan TimeInSubStatus { get { return DateTimeOffset.Now - this.SubStatusTime; } }
+		public TimeSpan TimeInSubStatus => DateTimeOffset.Now - this.SubStatusTime;
 
 		public ServiceComponentStatus()
 			: base()
@@ -47,9 +36,6 @@ namespace DKK.ServiceHostEvents
 			this.SubStatusTime = DateTimeOffset.MinValue;
 		}
 
-		public override string RoutingKey
-		{
-			get { return string.Format(CultureInfo.InvariantCulture, this.routingKeyFormat, this.Machine, this.ServiceComponent, this.Status); }
-		}
+		public override string RoutingKey => string.Format(CultureInfo.InvariantCulture, this.routingKeyFormat, this.Machine, this.ServiceComponent, this.Status);
 	}
 }

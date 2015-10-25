@@ -1,31 +1,26 @@
-﻿using DKK.Events;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using DKK.Messaging;
 using DKK.POCOs;
 using DKK.ServiceHostEvents;
 using DKK.WindowsServiceComponentInterface;
-using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DKK.WindowsServiceHost
 {
 	internal sealed class RunningServiceComponent
 	{
-		private string Environment { get; set; }
-		private string ConfigURL { get; set; }
-		private string Process { get; set; }
+		private string Environment { get; }
+		private string ConfigURL { get; }
+		private string Process { get; }
 		private ServiceComponent ServiceComponentData { get; set; }
-		private IEnumerable<KeyValuePair<string, string>> EnvironmentConfig { get; set; }
+		private IEnumerable<KeyValuePair<string, string>> EnvironmentConfig { get; }
 
 		private AppDomain WorkerDomain;
 		private IWindowsServiceComponent IServiceComponent;
 
-		public Guid Id { get { return this.ServiceComponentData.Id; } }
-		public int RowVersion { get { return this.ServiceComponentData.RowVersion; } }
+		public Guid Id => this.ServiceComponentData.Id;
+		public int RowVersion => this.ServiceComponentData.RowVersion;
 
 		public RunningServiceComponent(string environment, string configURL, ServiceComponent serviceComponent, IEnumerable<KeyValuePair<string, string>> envConfig)
 		{
@@ -135,7 +130,7 @@ namespace DKK.WindowsServiceHost
 			{
 				if (this.WorkerDomain == null)
 				{
-                    var adSetup = new AppDomainSetup();
+					var adSetup = new AppDomainSetup();
 					adSetup.ApplicationName = this.ServiceComponentData.FriendlyName;
 					this.WorkerDomain = AppDomain.CreateDomain(this.ServiceComponentData.FriendlyName, null, adSetup);
 				}

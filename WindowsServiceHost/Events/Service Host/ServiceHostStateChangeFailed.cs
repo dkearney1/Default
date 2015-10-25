@@ -1,25 +1,15 @@
-﻿using DKK.Events;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DKK.Events;
 
 namespace DKK.ServiceHostEvents
 {
 	[Serializable]
 	public sealed class ServiceHostStateChangeFailed : EventBase
 	{
-		protected override string routingKeyFormat
-		{
-			get { return @"ServiceHost.StateChangeFailed.{0}.{1}.{2}"; }
-		}
+		protected override string routingKeyFormat => @"ServiceHost.StateChangeFailed.{0}.{1}.{2}";
 
-		protected override string routingKeyExplanation
-		{
-			get { return @"ServiceHost.StateChangeFailed.Machine.Environment.State"; }
-		}
+		protected override string routingKeyExplanation => @"ServiceHost.StateChangeFailed.Machine.Environment.State";
 
 		public string Environment { get; set; }
 		public string State { get; set; }

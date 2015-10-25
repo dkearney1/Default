@@ -1,10 +1,6 @@
-﻿using DKK.Events;
+﻿using System;
+using DKK.Events;
 using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DKK.Messaging
 {

@@ -1,24 +1,14 @@
-﻿using DKK.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using DKK.Events;
 
 namespace DKK.FileWatcherEvents
 {
 	[Serializable]
 	public sealed class FileCreated : EventBase
 	{
-		protected override string routingKeyFormat
-		{
-			get { return @"FileWatcher.FileCreated.{0}.{1}"; }
-		}
+		protected override string routingKeyFormat => @"FileWatcher.FileCreated.{0}.{1}";
 
-		protected override string routingKeyExplanation
-		{
-			get { return @"FileWatcher.FileCreated.Directory.Filename"; }
-		}
+		protected override string routingKeyExplanation => @"FileWatcher.FileCreated.Directory.Filename";
 
 		public string Directory { get; set; }
 		public string Filename { get; set; }

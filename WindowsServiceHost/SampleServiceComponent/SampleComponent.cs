@@ -1,20 +1,16 @@
-﻿using DKK.Events;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Remoting.Lifetime;
+using System.Threading;
+using System.Threading.Tasks;
+using DKK.Events;
 using DKK.Messaging;
 using DKK.ServiceHostEvents;
 using DKK.WindowsServiceComponentInterface;
 using DKK.Work;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Lifetime;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace DKK.SampleServiceComponent
 {
@@ -29,8 +25,8 @@ namespace DKK.SampleServiceComponent
 		}
 
 		private bool Paused;
-		private string Process { get; set; }
-		private string ServiceComponent { get; set; }
+		private string Process { get; }
+		private string ServiceComponent { get; }
 		private TimeSpan IdleMessageRate { get; set; }
 		private string WorkQueue { get; set; }
 		private Task Task { get; set; }
@@ -63,7 +59,7 @@ namespace DKK.SampleServiceComponent
 				{
 					try
 					{
-                        var param = JsonConvert.DeserializeObject<SampleComponentParams>(this.Configuration, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+						var param = JsonConvert.DeserializeObject<SampleComponentParams>(this.Configuration, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
 						this.IdleMessageRate = TimeSpan.FromSeconds(param.IdleMessageRate);
 						this.WorkQueue = param.WorkQueue;
 					}
@@ -131,13 +127,13 @@ namespace DKK.SampleServiceComponent
 
 		private void PublishEvent(string status, string substatus = null)
 		{
-            var evnt = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, SubStatus = substatus };
+			var evnt = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, SubStatus = substatus };
 			this.PublishEvent(evnt);
 		}
 
 		private void PublishEventFailed(string status, Exception ex)
 		{
-            var evnt = new ServiceComponentStateChangeFailed() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, Exception = ex };
+			var evnt = new ServiceComponentStateChangeFailed() { Process = this.Process, ServiceComponent = this.ServiceComponent, Status = status, Exception = ex } as IEvent;
 			this.PublishEvent(evnt);
 		}
 
@@ -162,10 +158,10 @@ namespace DKK.SampleServiceComponent
 		private void InternalTask()
 		{
 			this.PublishEvent("Started");
-            var sleepSpan = TimeSpan.FromMilliseconds(100d);
-            var routingKey = this.WorkQueue;
+			var sleepSpan = TimeSpan.FromMilliseconds(100d);
+			var routingKey = this.WorkQueue;
 
-            var heartbeat = Task.Run(() =>
+			var heartbeat = Task.Run(() =>
 			{
 				CancellationToken hbct = this.CancellationTokenSource.Token;
 
@@ -177,7 +173,7 @@ namespace DKK.SampleServiceComponent
 				}
 			});
 
-            var ct = this.CancellationTokenSource.Token;
+			var ct = this.CancellationTokenSource.Token;
 
 			using (var wc = new WorkConsumer(this.MessageBrokerConnection.Connection))
 			{
@@ -214,18 +210,18 @@ namespace DKK.SampleServiceComponent
 
 		private void WorkItemHandler(IBasicProperties props, IWork iWork)
 		{
-            var work = iWork as SampleWorkItem;
+			var work = iWork as SampleWorkItem;
 			if (work == null)
-				throw new Exception(string.Format("Don't know how to work on '{0}' items", iWork.GetType().FullName));
+				throw new Exception($"Don't know how to work on '{iWork.GetType().FullName}' items");
 
 			this.InternalState = InternalStateEnum.Busy;
 
-            var currentStatus = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.GetType().Name, Status = "Working", SubStatus = "Starting" };
+			var currentStatus = new ServiceComponentStatus() { Process = this.Process, ServiceComponent = this.GetType().Name, Status = "Working", SubStatus = "Starting" };
 			this.PublishEvent(currentStatus);
 
-            var workItemType = work.ItemType;
-            var workItemId = work.ItemId;
-            var workDelay = work.WorkDelay;
+			var workItemType = work.ItemType;
+			var workItemId = work.ItemId;
+			var workDelay = work.WorkDelay;
 
 			currentStatus.SubStatus = "Executing";
 			this.PublishEvent(currentStatus);
@@ -242,7 +238,7 @@ namespace DKK.SampleServiceComponent
 		#region MarshalByRefObject
 		public override object InitializeLifetimeService()
 		{
-            var lease = (ILease)base.InitializeLifetimeService();
+			var lease = (ILease)base.InitializeLifetimeService();
 			if (lease.CurrentState == LeaseState.Initial)
 			{
 				lease.SponsorshipTimeout = TimeSpan.Zero;

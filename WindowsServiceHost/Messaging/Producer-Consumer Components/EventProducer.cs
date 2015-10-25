@@ -1,10 +1,6 @@
-﻿using DKK.Events;
+﻿using System;
+using DKK.Events;
 using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DKK.Messaging
 {
@@ -42,7 +38,7 @@ namespace DKK.Messaging
 		public void Publish(IEvent evnt, string routingKey = null, IBasicProperties properties = null)
 		{
 			if (evnt == null)
-				throw new ArgumentNullException("evnt");
+				throw new ArgumentNullException(nameof(evnt));
 
 			if (string.IsNullOrWhiteSpace(routingKey))
 				routingKey = evnt.RoutingKey;
@@ -68,12 +64,12 @@ namespace DKK.Messaging
 			if (!this.Channel.IsOpen)
 				throw new InvalidOperationException("Channel is not open");
 
-            var bytes = EventSerializer.Serialize(evnt);
+			var bytes = EventSerializer.Serialize(evnt);
 			properties.ContentEncoding = EventSerializer.ContentEncoding;
 			properties.ContentType = EventSerializer.ContentType;
 			properties.Type = evnt.GetType().FullName;
 
-            var eventsExchange = Constants.EventExchangeSettings;
+			var eventsExchange = Constants.EventExchangeSettings;
 			this.Channel.ExchangeDeclare(eventsExchange.Name, eventsExchange.ExchangeType, eventsExchange.Durable, eventsExchange.AutoDelete, eventsExchange.Arguments);
 			this.Channel.BasicPublish(eventsExchange.Name, routingKey, properties, bytes);
 		}

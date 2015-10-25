@@ -1,10 +1,6 @@
-﻿using DKK.Work;
+﻿using System;
+using DKK.Work;
 using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DKK.Messaging
 {
@@ -42,10 +38,10 @@ namespace DKK.Messaging
 		public void Publish(IWork work, string routingKey = null, IBasicProperties properties = null)
 		{
 			if (work == null)
-				throw new ArgumentNullException("work");
+				throw new ArgumentNullException(nameof(work));
 
 			if (string.IsNullOrWhiteSpace(routingKey))
-				throw new ArgumentNullException("routingKey");
+				throw new ArgumentNullException(nameof(routingKey));
 
 			if (properties == null)
 			{
@@ -68,12 +64,12 @@ namespace DKK.Messaging
 			if (!this.Channel.IsOpen)
 				throw new InvalidOperationException("Channel is not open");
 
-            var bytes = WorkSerializer.Serialize(work);
+			var bytes = WorkSerializer.Serialize(work);
 			properties.ContentEncoding = WorkSerializer.ContentEncoding;
 			properties.ContentType = WorkSerializer.ContentType;
 			properties.Type = work.GetType().FullName;
 
-            var WorkExchange = Constants.WorkExchangeSettings;
+			var WorkExchange = Constants.WorkExchangeSettings;
 			this.Channel.ExchangeDeclare(WorkExchange.Name, WorkExchange.ExchangeType, WorkExchange.Durable, WorkExchange.AutoDelete, WorkExchange.Arguments);
 			this.Channel.BasicPublish(WorkExchange.Name, routingKey, properties, bytes);
 		}

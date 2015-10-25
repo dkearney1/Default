@@ -10,22 +10,22 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Runtime.Serialization;
-using IbEm   = IdeaBlade.EntityModel;
 using IbCore = IdeaBlade.Core;
-using IbVal  = IdeaBlade.Validation;
+using IbEm = IdeaBlade.EntityModel;
+using IbVal = IdeaBlade.Validation;
 
 [module: IbCore.IdeaBladeLicense("kEX30kHh1PM0zb11Ypy2ByJ1WCZEP6S2oEi9zWHwrlvbui/yaFqqdMLdUFIEur+a")]
 
-namespace DKK.DataModel { 
+namespace DKK.DataModel
+{
 
-  #region DataModelEntities
+	#region DataModelEntities
 
-  /// <summary>
-  /// The domain-specific EntityManager for your domain model.
-  /// </summary>
-  public partial class DataModelEntities : IbEm.EntityManager {
+	/// <summary>
+	/// The domain-specific EntityManager for your domain model.
+	/// </summary>
+	public partial class DataModelEntities : IbEm.EntityManager {
 
     #region Constructors
 

@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace DKK.Commands
 {
@@ -20,7 +17,7 @@ namespace DKK.Commands
 			this.Created = DateTimeOffset.Now;
 			this.FromMachine = Environment.MachineName;
 			this.FromProcess = Path.GetFileName(System.Reflection.Assembly.GetCallingAssembly().CodeBase);
-			this.FromUserName = string.Format(@"{0}\{1}", Environment.UserDomainName, Environment.UserName);
+			this.FromUserName = $"{Environment.UserDomainName}\\{Environment.UserName}";
 		}
 
 		public CommandBase(ICommand src)
@@ -42,8 +39,9 @@ namespace DKK.Commands
 		public string FromUserName { get; protected set; }
 		public string ToMachine { get; protected set; }
 		public string ToProcess { get; protected set; }
-		public string RoutingKey { get { return this.GetType().Name; } }
+		public string RoutingKey => this.GetType().Name;
 		public Guid? CorrelationId { get; set; }
-		[JsonIgnore] public IEnumerable<Type> ResponseTypes { get { return this._responseTypes; } }
+		[JsonIgnore]
+		public IEnumerable<Type> ResponseTypes => this._responseTypes;
 	}
 }

@@ -1,25 +1,15 @@
-﻿using DKK.Events;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DKK.Events;
 
 namespace DKK.ServiceHostEvents
 {
 	[Serializable]
 	public sealed class ServiceHostStateChange : EventBase
 	{
-		protected override string routingKeyFormat
-		{
-			get { return @"ServiceHost.StateChange.{0}.{1}.{2}"; }
-		}
+		protected override string routingKeyFormat => @"ServiceHost.StateChange.{0}.{1}.{2}";
 
-		protected override string routingKeyExplanation
-		{
-			get { return @"ServiceHost.StateChange.Machine.Environment.State"; }
-		}
+		protected override string routingKeyExplanation => @"ServiceHost.StateChange.Machine.Environment.State";
 
 		public string Environment { get; set; }
 		public string State { get; set; }

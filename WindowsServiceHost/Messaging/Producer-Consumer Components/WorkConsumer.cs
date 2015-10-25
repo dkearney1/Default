@@ -1,15 +1,10 @@
-﻿using DKK.Work;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using RabbitMQ.Client.MessagePatterns;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DKK.Work;
+using RabbitMQ.Client;
 
 namespace DKK.Messaging
 {
@@ -21,9 +16,9 @@ namespace DKK.Messaging
 			public Action<IBasicProperties, IWork> Handler { get; set; }
 		}
 
-		private ExchangeSettings WorkExchange { get; set; }
-		private ConcurrentDictionary<string, SubscriptionInfo> RegisteredHandlers { get; set; }
-		private ConcurrentQueue<Action> QueueBindingOps { get; set; }
+		private ExchangeSettings WorkExchange { get; }
+		private ConcurrentDictionary<string, SubscriptionInfo> RegisteredHandlers { get; }
+		private ConcurrentQueue<Action> QueueBindingOps { get; }
 		private CancellationTokenSource CancellationTokenSource { get; set; }
 		private Task ConsumeTask { get; set; }
 
@@ -104,14 +99,14 @@ namespace DKK.Messaging
 				this.disposed = true;
 			}
 		}
-        #endregion
+		#endregion
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
-        private void Consume(CancellationToken ct)
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+		private void Consume(CancellationToken ct)
 		{
-            var autoAck = false;
+			var autoAck = false;
 
-            var subscriptionTimeout = TimeSpan.FromMilliseconds(100d);
+			var subscriptionTimeout = TimeSpan.FromMilliseconds(100d);
 
 			while (!ct.IsCancellationRequested)
 			{
@@ -122,44 +117,38 @@ namespace DKK.Messaging
 						action();
 				}
 
-                var workDone = false;
+				var workDone = false;
 
 				foreach (var si in this.RegisteredHandlers.Values)
 				{
-                    var result = this.Channel.BasicGet(si.WorkQueue.Name, autoAck);
-
-					if (result != null && !ct.IsCancellationRequested)
+					var getResult = this.Channel.BasicGet(si.WorkQueue.Name, autoAck);
+					if (getResult != null)
 					{
-                        var work = WorkDeserializer.Deserialize(result.Body) as IWork;
+						var work = WorkDeserializer.Deserialize(getResult.Body) as IWork;
+						if (work != null)
+						{
+							try
+							{
+								si.Handler(getResult.BasicProperties, work);
+								this.Channel.BasicAck(getResult.DeliveryTag, false);
+								workDone = true;
 
-						try
-						{
-							si.Handler(result.BasicProperties, work);
-							workDone = true;
-							// Once work is found on any queue,
-							// return to the top of the list of handlers,
-							// which makes the order of "registration"
-							// become the priority
-							break;
-						}
-						catch (Exception /*ex*/)
-						{
-                            // eat any and all exceptions
-                            // consider accepting an exception handler Action<>()
-                            // and calling it
+								// Once work is found on any queue,
+								// return to the top of the list of handlers,
+								// which makes the order of "registration"
+								// become the priority
 
-                            //this.Channel.BasicNack(result.DeliveryTag, false, true);
+								break;
+							}
+							catch (Exception /*ex*/)
+							{
+								// Consider allowing an exception action to be defined
+								// and, if defined, execute here
+								this.Channel.BasicNack(getResult.DeliveryTag, false, true);
+							}
 						}
-						finally
-						{
-							// If an exception is thrown processing a work item,
-							// it's not a good idea to automatically put it back
-							// in the queue to be reprocessed. Well behaved work
-							// will both send an event about the exception, and
-							// persist the work in such a state that it can be
-							// discovered and dealt with.
-							this.Channel.BasicAck(result.DeliveryTag, false);
-						}
+						else
+							this.Channel.BasicNack(getResult.DeliveryTag, false, true);
 					}
 				}
 

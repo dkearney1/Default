@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DKK.WindowsServiceHost
 {
@@ -24,11 +20,11 @@ namespace DKK.WindowsServiceHost
 				{
 					serviceHost.DebugStart();
 
-                    var exit = false;
+					var exit = false;
 					Console.WriteLine("Press x to exit");
 					do
 					{
-                        var cki = Console.ReadKey(true);
+						var cki = Console.ReadKey(true);
 						if (string.Compare("x", new string(cki.KeyChar, 1), true, CultureInfo.InvariantCulture) == 0)
 							exit = true;
 					}
@@ -43,12 +39,12 @@ namespace DKK.WindowsServiceHost
 
 				try
 				{
-                    var ServicesToRun = new ServiceBase[] { new ServiceHost() };
+					var ServicesToRun = new ServiceBase[] { new ServiceHost() };
 					ServiceBase.Run(ServicesToRun);
 				}
 				catch (Exception ex)
 				{
-					Trace.WriteLine(string.Format("Caught {0}, \"{1}\"", ex.GetType().ToString(), ex.ToString()));
+					Trace.WriteLine($"Caught {ex.GetType().ToString()}, \"{ ex.ToString()}\"");
 					DKKWindowsServiceHostEventSource.Log.Exception(ex);
 				}
 			}

@@ -1,11 +1,8 @@
-﻿using DKK.POCOs;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DKK.POCOs;
+using MongoDB.Driver;
 
 namespace DKK.POCOProvider
 {
@@ -18,65 +15,46 @@ namespace DKK.POCOProvider
 			this.collectionName = "Services";
 		}
 
-		public IQueryable<ServiceComponent> Queryable()
-		{
-			return base.AsQueryable();
-		}
+		public IQueryable<ServiceComponent> Queryable() => base.AsQueryable();
 
 		public new void Insert(ServiceComponent serviceComponent)
 		{
-			if (serviceComponent.Id == Guid.Empty)
-				throw new ArgumentNullException("ServiceComponent");
-
-			var r = base.Insert(serviceComponent);
-
-			if (!r.Ok)
-				throw new ArgumentOutOfRangeException("serviceComponent", string.Format("ServiceComponent {0}, {1}", serviceComponent.Id, r.ErrorMessage));
+			this.BasicGuards(serviceComponent, nameof(serviceComponent));
+			base.Insert(serviceComponent);
 		}
 
 		public void Update(ServiceComponent serviceComponent)
 		{
-			if (serviceComponent.Id == Guid.Empty)
-				throw new ArgumentNullException("ServiceComponent");
+			this.BasicGuards(serviceComponent, nameof(serviceComponent));
 
-            var rowVersion = serviceComponent.RowVersion;
-
-			var query = Query.And(
-									Query<ServiceComponent>.EQ(e => e.Id, serviceComponent.Id),
-									Query<ServiceComponent>.EQ(e => e.RowVersion, rowVersion)
-								);
-
+			var filter = this.BuildFilter(serviceComponent);
 			var update = this.BuildUpdate(serviceComponent);
 
-			var r = base.FindAndModify(query, update);
-
-			if (!r.Ok)
-				throw new ArgumentOutOfRangeException("serviceComponent", string.Format("ServiceComponent {0}, {1}", serviceComponent.Id, r.ErrorMessage));
+			base.FindOneAndModify(filter, update);
 
 			serviceComponent.RowVersion++;
 		}
 
 		public void Delete(ServiceComponent serviceComponent)
 		{
-			if (serviceComponent.Id == Guid.Empty)
-				throw new ArgumentNullException("ServiceComponent");
+			this.BasicGuards(serviceComponent, nameof(serviceComponent));
 
-            var rowVersion = serviceComponent.RowVersion;
+			var filter = this.BuildFilter(serviceComponent);
 
-			var query = Query.And(
-									Query<ServiceComponent>.EQ(e => e.Id, serviceComponent.Id),
-									Query<ServiceComponent>.EQ(e => e.RowVersion, rowVersion)
-								);
-
-			var r = base.Delete(query);
-
-			if (!r.Ok)
-				throw new ArgumentOutOfRangeException("serviceComponent", string.Format("ServiceComponent {0}, {1}", serviceComponent.Id, r.ErrorMessage));
+			base.DeleteOne(filter);
 		}
 
-		private UpdateBuilder<ServiceComponent> BuildUpdate(ServiceComponent current)
+		private FilterDefinition<ServiceComponent> BuildFilter(ServiceComponent serviceComponent)
 		{
-			var update = Update<ServiceComponent>
+			var filterBuilder = Builders<ServiceComponent>.Filter;
+			return filterBuilder.Eq(sc => sc.Id, serviceComponent.Id) &
+				filterBuilder.Eq(sc => sc.RowVersion, serviceComponent.RowVersion);
+		}
+
+		private UpdateDefinition<ServiceComponent> BuildUpdate(ServiceComponent current)
+		{
+			var updateBuilder = Builders<ServiceComponent>.Update;
+			return updateBuilder
 							.Set(e => e.Assembly, current.Assembly)
 							.Set(e => e.Class, current.Class)
 							.Set(e => e.ParamsAssembly, current.ParamsAssembly)
@@ -89,8 +67,6 @@ namespace DKK.POCOProvider
 							.Set(e => e.LastUpdater, current.LastUpdater)
 							.Set(e => e.LastUpdate, current.LastUpdate)
 							.Inc(e => e.RowVersion, 1);
-
-			return update;
 		}
 	}
 }

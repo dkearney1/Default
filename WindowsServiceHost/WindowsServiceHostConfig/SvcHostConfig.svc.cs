@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 namespace DKK.WindowsServiceHostConfig
 {
@@ -15,7 +9,7 @@ namespace DKK.WindowsServiceHostConfig
 
 		public IEnumerable<KeyValuePair<string, string>> GetConfig()
 		{
-            var response = new List<KeyValuePair<string, string>>();
+			var response = new List<KeyValuePair<string, string>>();
 
 			var appSettings = ConfigurationManager.AppSettings;
 			for (var i = 0; i < appSettings.Count; i++)

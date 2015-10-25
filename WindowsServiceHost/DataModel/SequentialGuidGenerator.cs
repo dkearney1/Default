@@ -14,22 +14,19 @@ namespace DKK.DataModel
 	/// </summary>
 	public static class SequentialGuidGenerator
 	{
-		public static Guid NewSequentialGuid(SequentialGuidType guidType)
-		{
-			return NewSequentialGuid(DateTime.UtcNow, Guid.NewGuid(), guidType);
-		}
+		public static Guid NewSequentialGuid(SequentialGuidType guidType) => NewSequentialGuid(DateTime.UtcNow, Guid.NewGuid(), guidType);
 
 		public static Guid NewSequentialGuid(DateTime created, Guid sourceGuid, SequentialGuidType resultingGuidType)
 		{
-            var randomBytes = sourceGuid.ToByteArray();
+			var randomBytes = sourceGuid.ToByteArray();
 
-            var timestamp = created.Ticks / 10000L;
-            var timestampBytes = BitConverter.GetBytes(timestamp);
+			var timestamp = created.Ticks / 10000L;
+			var timestampBytes = BitConverter.GetBytes(timestamp);
 
 			if (BitConverter.IsLittleEndian)
 				Array.Reverse(timestampBytes);
 
-            var guidBytes = new byte[16];
+			var guidBytes = new byte[16];
 
 			switch (resultingGuidType)
 			{

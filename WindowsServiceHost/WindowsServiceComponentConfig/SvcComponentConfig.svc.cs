@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 namespace DKK.WindowsServiceComponentConfig
 {
@@ -15,8 +11,8 @@ namespace DKK.WindowsServiceComponentConfig
 
 		public IEnumerable<string> GetEnvironments()
 		{
-            var key = string.Format("{0}Environments", prefix);
-            var response = new List<string>();
+			var key = $"{prefix}Environments";
+			var response = new List<string>();
 
 			var appSettings = ConfigurationManager.AppSettings;
 			if (!string.IsNullOrWhiteSpace(appSettings[key]))
@@ -27,8 +23,8 @@ namespace DKK.WindowsServiceComponentConfig
 
 		public IEnumerable<KeyValuePair<string, string>> GetEnvironmentConfig(string environment)
 		{
-            var key = string.Format("{0}Environment{1}", prefix, environment);
-            var response = new List<KeyValuePair<string, string>>();
+			var key = $"{prefix}Environment{environment}";
+			var response = new List<KeyValuePair<string, string>>();
 
 			var appSettings = ConfigurationManager.AppSettings;
 			if (!string.IsNullOrWhiteSpace(appSettings[key]))

@@ -1,15 +1,13 @@
-﻿using DKK.Events;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using DKK.Events;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.MessagePatterns;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DKK.Messaging
 {
@@ -21,17 +19,14 @@ namespace DKK.Messaging
 			public Action<IBasicProperties, IEvent> Handler { get; set; }
 		}
 
-		private ExchangeSettings EventExchange { get; set; }
-		private QueueSettings PrivateQueue { get; set; }
-		private ConcurrentDictionary<Type, SubscriptionInfo> RegisteredHandlers { get; set; }
-		private ConcurrentQueue<Action> QueueBindingOps { get; set; }
+		private ExchangeSettings EventExchange { get; }
+		private QueueSettings PrivateQueue { get; }
+		private ConcurrentDictionary<Type, SubscriptionInfo> RegisteredHandlers { get; }
+		private ConcurrentQueue<Action> QueueBindingOps { get; }
 		private CancellationTokenSource CancellationTokenSource { get; set; }
 		private Task ConsumeTask { get; set; }
 
-		public PublicationAddress PublicationAddress
-		{
-			get { return new PublicationAddress(this.EventExchange.ExchangeType, this.EventExchange.Name, this.PrivateQueue.Name); }
-		}
+		public PublicationAddress PublicationAddress => new PublicationAddress(this.EventExchange.ExchangeType, this.EventExchange.Name, this.PrivateQueue.Name);
 
 		public EventConsumer(IConnection connection)
 			: base(connection)
@@ -53,7 +48,7 @@ namespace DKK.Messaging
 		public void RegisterEventHandler<T>(string routingKey, Action<IBasicProperties, IEvent> action)
 			where T : IEvent
 		{
-            var t = typeof(T);
+			var t = typeof(T);
 
 			if (this.RegisteredHandlers.ContainsKey(t))
 				throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "Event Handler already registered for Type {0}", typeof(T).Name));
@@ -73,7 +68,7 @@ namespace DKK.Messaging
 		public bool UnregisterEventHandler<T>()
 			where T : IEvent
 		{
-            var t = typeof(T);
+			var t = typeof(T);
 			SubscriptionInfo si = null;
 
 			if (this.RegisteredHandlers.TryRemove(t, out si))
@@ -126,11 +121,11 @@ namespace DKK.Messaging
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
 		private void Consume(CancellationToken ct)
 		{
-            var autoAck = false;
+			var autoAck = false;
 
 			using (Subscription subscription = new Subscription(this.Channel, this.PrivateQueue.Name, autoAck))
 			{
-                var subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
+				var subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
 
 				while (!ct.IsCancellationRequested)
 				{
@@ -146,9 +141,9 @@ namespace DKK.Messaging
 
 					if (eventArgs != null && !ct.IsCancellationRequested)
 					{
-                        var evnt = EventDeserializer.Deserialize(eventArgs.Body) as IEvent;
+						var evnt = EventDeserializer.Deserialize(eventArgs.Body) as IEvent;
 
-                        var t = evnt.GetType();
+						var t = evnt.GetType();
 
 						try
 						{

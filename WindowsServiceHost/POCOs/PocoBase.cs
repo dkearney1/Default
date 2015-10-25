@@ -1,13 +1,9 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.IdGenerators;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace DKK.POCOs
 {
@@ -17,7 +13,7 @@ namespace DKK.POCOs
 		{
 			//this.Id = this.NewGuidComb();
 			this.CreateDate = DateTime.UtcNow;
-			this.Creator = string.Format(@"{0}\{1}", Environment.UserDomainName, Environment.UserName);
+			this.Creator = $"{Environment.UserDomainName}\\{Environment.UserName}";
 			this.RowVersion = 0;
 		}
 
@@ -35,7 +31,7 @@ namespace DKK.POCOs
 			get { return this._id; }
 			set
 			{
-				SetProperty<Guid>(ref this._id, value);
+				SetProperty(ref this._id, value);
 			}
 		}
 
@@ -116,7 +112,7 @@ namespace DKK.POCOs
 
 			storage = value;
 			this._lastUpdate = DateTime.UtcNow;
-			this._lastUpdater = string.Format(@"{0}\{1}", Environment.UserDomainName, Environment.UserName);
+			this._lastUpdater = $"{Environment.UserDomainName}\\{Environment.UserName}";
 			this.OnPropertyChanged(propertyName);
 			return true;
 		}
@@ -129,9 +125,7 @@ namespace DKK.POCOs
 		/// that support <see cref="CallerMemberNameAttribute"/>.</param>
 		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			var eventHandler = this.PropertyChanged;
-			if (eventHandler != null)
-				eventHandler(this, new PropertyChangedEventArgs(propertyName));
+			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 		#endregion
 	}

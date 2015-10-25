@@ -1,10 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using System;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DKK.Messaging
 {
@@ -20,13 +16,13 @@ namespace DKK.Messaging
 		public event EventHandler<FlowControlEventArgs> FlowControl;
 		public event EventHandler<ShutdownEventArgs> ModelShutdown;
 
-		protected IConnection Connection { get; private set; }
+		protected IConnection Connection { get; }
 		protected IModel Channel { get; private set; }
 
 		protected ChannelBase(IConnection connection)
 		{
 			if (connection == null)
-				throw new ArgumentNullException("connection");
+				throw new ArgumentNullException(nameof(connection));
 
 			this.Connection = connection;
 			this.Channel = this.Connection.CreateModel();
@@ -69,6 +65,7 @@ namespace DKK.Messaging
 					this.Channel.ModelShutdown -= this.ModelShutdownEventHandler;
 
 					this.Channel.Dispose();
+					this.Channel = null;
 				}
 
 				this.disposed = true;
@@ -79,51 +76,37 @@ namespace DKK.Messaging
 		#region EventHandling
 		private void BasicAckEventHandler(object sender, BasicAckEventArgs e)
 		{
-            var handler = this.BasicAcks;
-			if (handler != null)
-				handler(sender, e);
+			this.BasicAcks?.Invoke(sender, e);
 		}
 
 		private void BasicNackEventHandler(object sender, BasicNackEventArgs e)
 		{
-            var handler = this.BasicNacks;
-			if (handler != null)
-				handler(sender, e);
+			this.BasicNacks?.Invoke(sender, e);
 		}
 
 		private void BasicRecoverOkEventHandler(object sender, EventArgs e)
 		{
-            var handler = this.BasicRecoverOk;
-			if (handler != null)
-				handler(sender, e);
+			this.BasicRecoverOk?.Invoke(sender, e);
 		}
 
 		private void BasicReturnEventHandler(object sender, BasicReturnEventArgs e)
 		{
-            var handler = this.BasicReturn;
-			if (handler != null)
-				handler(sender, e);
+			this.BasicReturn?.Invoke(sender, e);
 		}
 
 		private void CallbackExceptionHandler(object sender, CallbackExceptionEventArgs e)
 		{
-            var handler = this.CallbackException;
-			if (handler != null)
-				handler(sender, e);
+			this.CallbackException?.Invoke(sender, e);
 		}
 
 		private void FlowControlEventHandler(object sender, FlowControlEventArgs e)
 		{
-            var handler = this.FlowControl;
-			if (handler != null)
-				handler(sender, e);
+			this.FlowControl?.Invoke(sender, e);
 		}
 
 		private void ModelShutdownEventHandler(object sender, ShutdownEventArgs e)
 		{
-            var handler = this.ModelShutdown;
-			if (handler != null)
-				handler(sender, e);
+			this.ModelShutdown?.Invoke(sender, e);
 		}
 		#endregion
 	}

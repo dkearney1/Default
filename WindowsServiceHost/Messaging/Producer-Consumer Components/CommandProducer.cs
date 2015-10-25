@@ -1,25 +1,19 @@
-﻿using DKK.Commands;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using DKK.Commands;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.MessagePatterns;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DKK.Messaging
 {
 	public sealed class CommandProducer : ChannelBase, ICommandProducer
 	{
-		private ExchangeSettings CmdExchange { get; set; }
-		private QueueSettings PrivateQueue { get; set; }
+		private ExchangeSettings CmdExchange { get; }
+		private QueueSettings PrivateQueue { get; }
 
-		public string QueueName
-		{
-			get { return (this.PrivateQueue == null ? null : this.PrivateQueue.Name); }
-		}
+		public string QueueName => (this.PrivateQueue == null ? null : this.PrivateQueue.Name);
 
 		public CommandProducer(IConnection connection)
 			: base(connection)
@@ -63,7 +57,7 @@ namespace DKK.Messaging
 			if (!timeout.HasValue)
 				timeout = TimeSpan.MaxValue;
 
-            var props = this.Channel.CreateBasicProperties();
+			var props = this.Channel.CreateBasicProperties();
 
 			//props.AppId;
 			//props.ClusterId;
@@ -77,10 +71,10 @@ namespace DKK.Messaging
 			//props.ProtocolClassName;
 			//props.ReplyTo;
 			props.ReplyToAddress = new PublicationAddress(this.CmdExchange.ExchangeType, this.CmdExchange.Name, this.PrivateQueue.Name);
-            //props.Timestamp;
-            //props.UserId;
+			//props.Timestamp;
+			//props.UserId;
 
-            var reqBytes = CommandSerializer.Serialize(command);
+			var reqBytes = CommandSerializer.Serialize(command);
 			props.ContentEncoding = CommandSerializer.ContentEncoding;
 			props.ContentType = CommandSerializer.ContentType;
 			props.Type = command.GetType().FullName;
@@ -93,7 +87,7 @@ namespace DKK.Messaging
 
 			using (CancellationTokenSource cts = new CancellationTokenSource())
 			{
-                var ct = cts.Token;
+				var ct = cts.Token;
 
 				Task replyTask = null;
 				if (command.CorrelationId.HasValue)
@@ -102,10 +96,10 @@ namespace DKK.Messaging
 
 					replyTask = Task.Run(() =>
 					{
-                        var autoAck = false;
+						var autoAck = false;
 						using (var subscription = new Subscription(this.Channel, this.PrivateQueue.Name, autoAck))
 						{
-                            var subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
+							var subscriptionTimeout = TimeSpan.FromMilliseconds(100d).Milliseconds;
 
 							while (!ct.IsCancellationRequested)
 							{
