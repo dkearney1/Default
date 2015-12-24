@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EntityFramework.MicrosoftSqlServer.Design</name>
+    </assembly>
+    <members>
+        <member name="M:Microsoft.Data.Entity.Scaffolding.Internal.SqlServerLiteralUtilities.ConvertSqlServerStringLiteral(System.String)">
+            <summary>
+                Converts a string of the form 'There''s a double single quote in here'
+                or, for unicode strings, N'There''s a double single quote in here'
+                (including the optional N and the outer single quotes) to the string literal
+                "There's a double single quote in here" (not including the double quotes).
+            </summary>
+            <param name="sqlServerStringLiteral"> the string to convert </param>
+            <returns> the converted string, or null if it cannot convert </returns>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Scaffolding.Internal.SqlServerLiteralUtilities.ConvertSqlServerBitLiteral(System.String)">
+            <summary>
+                SQL Server stores the values 0 or 1 in bit columns. Interpret these
+                as false and true respectively.
+            </summary>
+            <param name="sqlServerStringLiteral"> the string to convert </param>
+            <returns>
+                false if the string can be interpreted as 0, true if it can be
+                interpreted as 1, otherwise null
+            </returns>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.CannotFindForeignKeyMappingForConstraintId(System.Object,System.Object)">
+            <summary>
+            Could not find foreignKeyMapping for ConstraintId {constraintId} for FromColumn {fromColumnId}. Skipping generation of ForeignKey.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.CannotFindRelationalPropertyForColumnId(System.Object,System.Object)">
+            <summary>
+            For foreign key ConstraintId {constraintId}, could not find relational property mapped to ToColumn {toColumnId}. Skipping generation of ForeignKey.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.CannotInterpretSqlServerStringLiteral(System.Object)">
+            <summary>
+            Unable to interpret the string {sqlServerStringLiteral} as a SQLServer string literal.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.DataTypeDoesNotAllowSqlServerIdentityStrategy(System.Object,System.Object)">
+            <summary>
+            For column {columnId}. This column is set up as an Identity column, but the SQL Server data type is {sqlServerDataType}. This will be mapped to CLR type byte which does not allow the SqlServerValueGenerationStrategy.IdentityColumn setting. Generating a matching Property but ignoring the Identity setting.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.ForeignKeyTargetTableWasExcluded(System.Object,System.Object,System.Object)">
+            <summary>
+            For foreign key constraint {constraintId}.  The target column(s) belong to table [{schemaName}].[{tableName}] which was excluded from code generation.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.NoKeyForColumns(System.Object,System.Object,System.Object)">
+            <summary>
+            For foreign key constraint {constraintId}. Unable to identify any primary or alternate key on entity type {entityTypeName} for properties {propertyNames}. Skipping generation of ForeignKey.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.NoPrimaryKeyColumns(System.Object,System.Object)">
+            <summary>
+            Unable to identify any primary key columns in the underlying SQL Server table [{schemaName}].[{tableName}].
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.UnableToConvertDefaultValue(System.Object,System.Object,System.Object,System.Object,System.Object)">
+            <summary>
+            For column {columnId} unable to convert default value {defaultValue} into type {propertyType}. Will not generate code setting a default value for the property {propertyName} on entity type {entityTypeName}.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.UnableToMatchPropertiesForForeignKey(System.Object,System.Object)">
+            <summary>
+            For foreign key constraint {constraintId}. Could not find properties mapped to the following columns: {unmappedColumnIds}. Skipping generation of ForeignKey.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Data.Entity.Internal.SqlServerDesignStrings.UnableToMatchPropertiesForUniqueKey(System.Object,System.Object)">
+            <summary>
+            For unique constraint {constraintId}. Could not find properties mapped to the following columns: {unmappedColumnIds}. Skipping generation of AlternateKey.
+            </summary>
+        </member>
+    </members>
+</doc>

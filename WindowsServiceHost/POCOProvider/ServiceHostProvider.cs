@@ -20,19 +20,19 @@ namespace DKK.POCOProvider
 		public new void Insert(ServiceHost serviceHost)
 		{
 			this.BasicGuards(serviceHost, nameof(serviceHost));
+
 			base.Insert(serviceHost);
 		}
 
-		public void Update(ServiceHost serviceHost)
+		public ServiceHost Update(ServiceHost serviceHost)
 		{
 			this.BasicGuards(serviceHost, nameof(serviceHost));
 
 			var filter = this.BuildFilter(serviceHost);
 			var update = this.BuildUpdate(serviceHost);
+			var options = this.BuildOptions();
 
-			base.FindOneAndModify(filter, update);
-
-			serviceHost.RowVersion++;
+			return base.FindOneAndModify(filter, update, options);
 		}
 
 		public void Delete(ServiceHost serviceHost)
@@ -40,29 +40,26 @@ namespace DKK.POCOProvider
 			this.BasicGuards(serviceHost, nameof(serviceHost));
 
 			var filter = this.BuildFilter(serviceHost);
+			var result = base.DeleteOne(filter);
 
-			base.DeleteOne(filter);
+			if (!result.IsAcknowledged || result.DeletedCount != 1)
+				throw new POCOItemUpdatedException($"No matching record found for {serviceHost.Machine} by Id and RowVersion.");
 		}
 
-		private FilterDefinition<ServiceHost> BuildFilter(ServiceHost serviceHost)
-		{
-			var filterBuilder = Builders<ServiceHost>.Filter;
-			return filterBuilder.Eq(sc => sc.Id, serviceHost.Id) &
-				filterBuilder.Eq(sc => sc.RowVersion, serviceHost.RowVersion);
-		}
-
-		private UpdateDefinition<ServiceHost> BuildUpdate(ServiceHost current)
+		private UpdateDefinition<ServiceHost> BuildUpdate(ServiceHost update)
 		{
 			var updateBuilder = Builders<ServiceHost>.Update;
 			return updateBuilder
-							.Set(e => e.Machine, current.Machine)
-							.Set(e => e.CommandMessageQueue, current.CommandMessageQueue)
-							.Set(e => e.Components, current.Components)
-							.Set(e => e.Creator, current.Creator)
-							.Set(e => e.CreateDate, current.CreateDate)
-							.Set(e => e.LastUpdater, current.LastUpdater)
-							.Set(e => e.LastUpdate, current.LastUpdate)
-							.Inc(e => e.RowVersion, 1);
+							// set most properties to the update's value
+							.Set(persisted => persisted.Machine, update.Machine)
+							.Set(persisted => persisted.CommandMessageQueue, update.CommandMessageQueue)
+							.Set(persisted => persisted.Components, update.Components)
+							.Set(persisted => persisted.Creator, update.Creator)
+							.Set(persisted => persisted.CreateDate, update.CreateDate)
+							.Set(persisted => persisted.LastUpdater, update.LastUpdater)
+							.Set(persisted => persisted.LastUpdate, update.LastUpdate)
+							// increment the RowVersion
+							.Inc(persisted => persisted.RowVersion, 1);
 		}
 	}
 }

@@ -443,7 +443,7 @@ namespace DKK.WindowsServiceHost
 			var provider = new ServiceHostProvider(mongoEnv);
 			var sh = provider.Queryable().Single(q => q.Machine == Environment.MachineName);
 			sh.CommandMessageQueue = publicationAddress;
-			provider.Update(sh);
+			sh = provider.Update(sh);
 		}
 
 		private static void AppDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

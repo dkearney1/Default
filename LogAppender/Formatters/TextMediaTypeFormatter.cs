@@ -12,7 +12,7 @@ namespace LogAppender.Formatters
 	{
 		public TextMediaTypeFormatter()
 		{
-			//SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
+			SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
 			SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 			//SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/javascript"));
 
@@ -25,10 +25,10 @@ namespace LogAppender.Formatters
 			var taskSource = new TaskCompletionSource<object>();
 			try
 			{
+				Encoding effectiveEncoding = SelectCharacterEncoding(content.Headers);
 				using (var ms = new MemoryStream())
 				{
-					Encoding effectiveEncoding = SelectCharacterEncoding(content.Headers);
-					readStream.CopyToAsync(ms);
+					readStream.CopyTo(ms);
 					taskSource.SetResult(effectiveEncoding.GetString(ms.ToArray()));
 				}
 			}

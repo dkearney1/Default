@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="POCOItemUpdatedException.cs" />
     <Compile Include="ServiceHostProvider.cs" />
     <Compile Include="PocoProviderBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
