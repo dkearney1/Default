@@ -32,7 +32,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Protected" ib12:BindableMode="OneWay" />
+          <Property Name="Id" Type="Guid" Nullable="false" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" a:SetterAccess="Protected" ib12:BindableMode="OneWay" >
+            <Documentation>
+              <Summary>Summry</Summary>
+              <LongDescription>Long Description</LongDescription>
+            </Documentation>
+          </Property>
           <Property Name="Machine" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="LocalFolder" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Creator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" a:SetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" ib12:BindableMode="OneWay" />
